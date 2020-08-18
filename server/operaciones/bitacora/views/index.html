@@ -1,0 +1,69 @@
+{%extends ../../../common/views/layout.html%}
+
+{%block style%}
+    {% set user = usuario %}
+    <link rel="stylesheet" href="operaciones/bitacora/assets/bitacora.css">
+{%end%}
+
+{%block content%}
+    <div class="header"><h2 class="title-rg-own">BITÁCORA</h2></div>
+
+    <div class="body">
+        <div class="row">
+            <div class="body table-responsive">
+                <table id="data_table" class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th class="order_by_th" data-name="names">ID </th>
+                            <th class="order_by_th" data-name="phone">Usuario </th>
+                            <th class="order_by_th" data-name="phone">Acción </th>
+                            <th class="order_by_th" data-name="phone">Dirección IP </th>
+                            <th class="order_by_th" data-name="phone">Tabla </th>
+                            <th class="order_by_th" data-name="phone">Identificador </th>
+                            <th class="order_by_th" data-name="phone">Fecha </th>
+                        </tr>
+                    </thead>
+
+                </table>
+            </div>
+        </div>
+    </div>
+{%end%}
+
+{% block script %}
+    <script src="resources/plugins/momentjs/locale/es.js"></script>
+    <script src="resources/js/functions.js"></script>
+    <script src="operaciones/bitacora/assets/bitacora.js"></script>
+
+    <script src="resources/js/dataTables.buttons.js"></script>
+    <script src="resources/js/pdfmake.js"></script>
+    <script src="resources/js/vfs_fonts.js"></script>
+    <script src="resources/js/buttons.bootstrap.js"></script>
+    <script src="resources/js/buttons.html5.js"></script>
+    <script src="resources/js/buttons.print.js"></script>
+    <script src="resources/js/buttons.colVis.js"></script>
+<script>
+    $(document).ready(function () {
+
+            var data = [];
+            {% set cont = 0 %}
+            {% for c in objects %}
+
+
+                data.push( [
+                    '{{ c.id }}',
+                    '{{ c.usuario.username}}',
+                    '{{ c.accion }}',
+                    '{{ c.ip }}',
+                    '{{ c.tabla }}',
+                    '{{ c.identificador }}',
+                    '{{ c.fecha.strftime("%d/%m/%Y %H:%M:%S") }}',
+
+                ]);
+            {% set cont = cont + 1 %}
+            {% end %}
+            cargar_tabla(data)
+        });
+
+   </script>
+{% end %}

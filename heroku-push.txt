@@ -1,0 +1,8 @@
+E:
+cd C:\Proyectos\proyecto_prueba
+heroku login
+git init
+heroku git:remote -a sistemacondominio
+git add .
+git commit -am "actualizacion"
+git push heroku master
