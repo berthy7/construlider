@@ -10,7 +10,12 @@ class ManzanoManager(SuperManager):
         super().__init__(Manzano, db)
 
     def listar_todo(self):
-        return self.db.query(self.entity).filter(self.entity.estado == True).order_by(self.entity.nombre.asc()).all()
+        return self.db.query(self.entity).filter(self.entity.enabled == True).order_by(self.entity.nombre.asc()).all()
+
+    def listar_x_urbanizacion(self, idurbanizacion):
+
+        return self.db.query(self.entity).filter(self.entity.enabled == True).filter(self.entity.fkurbanizacion == idurbanizacion)\
+            .order_by(self.entity.numero.asc()).all()
 
 
     def insert(self, diccionary):
@@ -34,5 +39,26 @@ class ManzanoManager(SuperManager):
         super().insert(b)
 
         return a
+
+    def delete(self, id, Usuario, ip,enable):
+        x = self.db.query(self.entity).filter(self.entity.id == id).first()
+
+        x.enabled = enable
+
+        if enable:
+            mensaje = "Se habilitó Manzano."
+        else:
+            mensaje = "Se deshabilitó Manzano."
+
+        fecha = BitacoraManager(self.db).fecha_actual()
+        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha)
+        super().insert(b)
+        self.db.merge(x)
+        self.db.commit()
+
+        return mensaje
+
+
+
 
 

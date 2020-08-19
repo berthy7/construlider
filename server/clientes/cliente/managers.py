@@ -36,3 +36,21 @@ class ClienteManager(SuperManager):
         return a
 
 
+    def delete(self, id, Usuario, ip, enable):
+        x = self.db.query(self.entity).filter(self.entity.id == id).first()
+
+        x.enabled = enable
+
+        if enable:
+            mensaje = "Se habilitó Cliente."
+        else:
+            mensaje = "Se deshabilitó Cliente."
+
+        fecha = BitacoraManager(self.db).fecha_actual()
+        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha)
+        super().insert(b)
+        self.db.merge(x)
+        self.db.commit()
+
+        return mensaje
+

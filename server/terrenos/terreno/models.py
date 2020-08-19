@@ -7,7 +7,7 @@ from server.database.serializable import Serializable
 
 
 class Terreno(Serializable, Base):
-    way = {'manzano': {'urbanizacion': {}}}
+    way = {'manzano': {'contrato': {}}}
 
     __tablename__ = 'terreno'
 
@@ -18,8 +18,22 @@ class Terreno(Serializable, Base):
     superficieConstruida = Column(Float, nullable=True)
 
     fkmanzano = Column(Integer, ForeignKey('manzano.id'), nullable=True)
+    fktipoterreno = Column(Integer, ForeignKey('tipoTerreno.id'), nullable=True)
 
     enabled = Column(Boolean, default=True)
 
     manzano = relationship('Manzano')
+    tipoterreno = relationship('Tipoterreno')
+
+
+class Tipoterreno(Serializable, Base):
+    way = {}
+
+    __tablename__ = 'tipoTerreno'
+
+    id = Column( Integer, primary_key=True)
+    nombre = Column(  String(100), nullable=False)
+
+    enabled = Column(Boolean, default=True)
+
 

@@ -1,5 +1,6 @@
 from .managers import *
 from server.common.controllers import CrudController
+from server.terrenos.urbanizacion.managers import *
 
 import json
 
@@ -14,6 +15,12 @@ class CasaController(CrudController):
         '/casa_update': {'PUT': 'edit', 'POST': 'update'},
         '/casa_delete': {'POST': 'delete'}
     }
+
+    def get_extra_data(self):
+        aux = super().get_extra_data()
+        aux['urbanizaciones'] = UrbanizacionManager(self.db).listar_habilitados()
+
+        return aux
 
 
     def insert(self):
@@ -43,3 +50,4 @@ class CasaController(CrudController):
 
         self.respond(success=True, message=respuesta)
         self.db.close()
+

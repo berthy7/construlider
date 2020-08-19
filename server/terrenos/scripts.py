@@ -1,6 +1,7 @@
 import hashlib
 from server.database.connection import transaction
 from ..usuarios.rol.models import *
+from server.terrenos.terreno.models import *
 
 
 def insertions():
@@ -17,9 +18,9 @@ def insertions():
         if manzano_m is None:
             manzano_m = Modulo(title='Manzanos', route='/manzano', name='manzano', icon='place')
 
-        terreno_m = session.query(Modulo).filter(Modulo.name == 'terreno').first()
+        terreno_m = session.query(Modulo).filter(Modulo.name == 'reserva').first()
         if terreno_m is None:
-            terreno_m = Modulo(title='Terrenos', route='/terreno', name='terreno', icon='location_city')
+            terreno_m = Modulo(title='Terrenos', route='/terreno', name='terreno', icon='texture')
 
         casa_m = session.query(Modulo).filter(Modulo.name == 'casa').first()
         if casa_m is None:
@@ -31,11 +32,6 @@ def insertions():
         terrenos_m.children.append(manzano_m)
         terrenos_m.children.append(terreno_m)
         terrenos_m.children.append(casa_m)
-
-
-
-
-
 
 
         query_urbanizacion = session.query(Modulo).filter(Modulo.name == 'urbanizacion_query').first()
@@ -165,6 +161,9 @@ def insertions():
         registrador_role.modulos.append(query_manzano)
         registrador_role.modulos.append(query_terreno)
         registrador_role.modulos.append(query_casa)
+
+        session.add(Tipoterreno(nombre='Terreno'))
+        session.add(Tipoterreno(nombre='Casa'))
 
 
         session.commit()

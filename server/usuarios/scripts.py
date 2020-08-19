@@ -81,7 +81,7 @@ def insertions():
 
         registrador_role = session.query(Rol).filter(Rol.nombre == 'REGISTRADOR').first()
         if registrador_role is None:
-            registrador_role = Rol(nombre='REGISTRADOR', descripcion='Acceso a operaciones de venta y gestión de clientes')
+            registrador_role = Rol(nombre='REGISTRADOR', descripcion='Acceso a operaciones de contrato y gestión de clientes')
 
 
 

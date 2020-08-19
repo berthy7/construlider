@@ -11,9 +11,6 @@ $(document).ajaxStop(function () {
     $.Toast.hideToast();
 });
 
-
-
-
 function cargar_tabla(data){
 
     if ( $.fn.DataTable.isDataTable( '#data_table' ) ) {
@@ -57,6 +54,99 @@ function cargar_tabla(data){
     });
 }
 
+function append_input_terreno(id_in) {
+
+    $('#terreno_div').append(
+    '<div class="row">\
+        <div class="col-sm-1 hidden">\
+            <div class="input-group">\
+            <input  id="id'+id_in+'" clrass="form-control  idterreno reserva readonly txta-own">\
+            </div>\
+        </div>\
+        <div class="col-sm-3">\
+            <div class="form-line">\
+            <input  id="ancho'+id_in+'" type="number" class="form-control reserva txta-own">\
+            </div>\
+        </div>\
+        <div class="col-sm-3">\
+            <div class="form-line">\
+                <input id="largo'+id_in+'" type="number" data-id="'+id_in+'" class="form-control reserva  txta-own">\
+            </div>\
+        </div>\
+        <div class="col-sm-3">\
+            <div  class="form-line">\
+                <input id="superficie'+id_in+'" type="number" data-id="'+id_in+'" class="form-control reserva  txta-own">\
+            </div>\
+        </div>\
+        <div class="col-sm-3">\
+            <div  class="form-line">\
+                <input id="superficieConstruida'+id_in+'" type="number" data-id="'+id_in+'" class="form-control reserva  txta-own">\
+            </div>\
+        </div>\
+        <div class="col-sm-1">\
+            <button type="button" class="btn bg-red waves-effect clear_" title="Eliminar">\
+                <i class="material-icons">clear</i>\
+            </button>\
+        </div>\
+    </div>'
+)
+
+    $('.clear_').last().click(function () {
+        $(this).parent().parent().remove()
+    })
+
+
+}
+
+$('#new_terreno').click(function () {
+
+       append_input_terreno('')
+
+})
+
+function get_terreno() {
+    objeto = []
+    objeto_inputs = $('.reserva')
+
+    for (i = 0; i < objeto_inputs.length; i += 4) {
+        h0 = objeto_inputs[i].value
+        h1 = objeto_inputs[i + 1].value
+        h2 = objeto_inputs[i + 2].value
+        h3 = objeto_inputs[i + 3].value
+
+
+        objeto.push((function add_(h0, h1, h2,h3) {
+
+            if (h0 ==''){
+                return {
+                    'numero': h1,
+                    'calle1': h2,
+                    'calle2': h3
+
+                }
+
+            }else{
+                return {
+                'id':h0,
+                'numero': h1,
+                'calle1': h2,
+                'calle2': h3
+                }
+            }
+
+
+        })(
+            h0,
+            h1,
+            h2,
+            h3))
+    }
+
+
+    return objeto
+}
+
+
 $('#fkurbanizacion').selectpicker({
     size: 10,
     liveSearch: true,
@@ -72,7 +162,6 @@ $('#new').click(function () {
     $('#calle2').val('')
     $('#fkurbanizacion').val('')
     $('#fkurbanizacion').selectpicker('refresh')
-
 
     verif_inputs('')
     validationInputSelects("form")

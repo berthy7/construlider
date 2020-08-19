@@ -1,4 +1,4 @@
-main_route = '/urbanizacion'
+main_route = '/contrato'
 
 $(document).ready(function () {
 
@@ -62,7 +62,7 @@ function append_input_manzano(id_in) {
     '<div class="row">\
         <div class="col-sm-1 hidden">\
             <div class="input-group">\
-            <input  id="id'+id_in+'" class="form-control  idmanzano manzano readonly txta-own">\
+            <input  id="id'+id_in+'" class="form-control idmanzano manzano readonly txta-own">\
             </div>\
         </div>\
         <div class="col-sm-2">\

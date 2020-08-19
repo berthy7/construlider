@@ -27,10 +27,14 @@
                 <table id="data_table" class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
-                            <th class="order_by_th accion" data-name="name">Nro </th>
-                            <th class="order_by_th accion" data-name="name">Nombre </th>
-                            <th class="order_by_th accion" data-name="description">telefono </th>
-                            <th class="order_by_th accion" data-name="description">Estado </th>
+                            <th class="order_by_th accion" data-name="name">Nro</th>
+                            <th class="order_by_th accion" data-name="name">Urbanizacion</th>
+                            <th class="order_by_th accion" data-name="name">Manzano</th>
+                            <th class="order_by_th accion" data-name="name">Ancho</th>
+                            <th class="order_by_th accion" data-name="description">Largo</th>
+                            <th class="order_by_th accion" data-name="description">Superficie</th>
+                            <th class="order_by_th accion" data-name="description">Superficie Construida</th>
+                            <th class="actions_header">Estado</th>
                             <th class="actions_header">Acciones</th>
                         </tr>
                     </thead>
@@ -56,8 +60,12 @@
             {% for c in objects %}
                 data.push( [
                     '{{ c.id }}',
-                    '{{ c.username }}',
-                    '{{ c.telefono}}',
+                    '{{ c.manzano.urbanizacion.direccion }}',
+                    '{{ c.manzano.numero }}',
+                     '{{ c.ancho }}',
+                     '{{ c.largo }}',
+                     '{{ c.superficie }}',
+                     '{{ c.superficieConstruida }}',
                     '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
                     '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
 

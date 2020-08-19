@@ -85,9 +85,6 @@ class UsuarioManager(SuperManager):
             x.enabled = enable
             message = "Se deshabilitó un usuario."
 
-
-
-
         fecha = BitacoraManager(self.db).fecha_actual()
         b = Bitacora(fkusuario=Usuariocr, ip=ip, accion=message, fecha=fecha)
         super().insert(b)

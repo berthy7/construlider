@@ -7,7 +7,7 @@ from server.database.serializable import Serializable
 
 
 class Manzano(Serializable, Base):
-    way = {'urbanizacion': {}}
+    way = {'contrato': {}}
 
     __tablename__ = 'manzano'
 

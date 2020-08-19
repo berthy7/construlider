@@ -13,8 +13,7 @@ class ClienteController(CrudController):
         '/cliente': {'GET': 'index', 'POST': 'table'},
         '/cliente_insert': {'POST': 'insert'},
         '/cliente_update': {'PUT': 'edit', 'POST': 'update'},
-        '/cliente_delete': {'POST': 'delete'},
-        '/cliente_reporte': {'POST': 'imprimirxls'}
+        '/cliente_delete': {'POST': 'delete'}
     }
 
 

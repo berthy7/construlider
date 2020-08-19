@@ -9,6 +9,11 @@ from .terrenos.casa.controllers import *
 from .terrenos.urbanizacion.controllers import *
 from .terrenos.manzano.controllers import *
 
+from .ventas.reserva.controllers import *
+from .ventas.contrato.controllers import *
+from .ventas.credito.controllers import *
+from .ventas.entidad.controllers import *
+
 
 from server.operaciones.bitacora.controllers import *
 
@@ -46,6 +51,12 @@ def get_handlers():
     handlers.extend(get_routes(UrbanizacionController))
     handlers.extend(get_routes(ManzanoController))
 
+    # Reserva ventas
+    handlers.extend(get_routes(ReservaController))
+    handlers.extend(get_routes(ContratoController))
+    handlers.extend(get_routes(CreditoController))
+    handlers.extend(get_routes(EntidadController))
+
 
     # Recursos por submodulo
     handlers.append((r'/resources/(.*)', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'common', 'resources')}))
@@ -56,6 +67,7 @@ def get_handlers():
     handlers.append((r'/usuarios/(.*)', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'usuarios')}))
     handlers.append((r'/clientes/(.*)', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'clientes')}))
     handlers.append((r'/terrenos/(.*)', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'terrenos')}))
+    handlers.append((r'/ventas/(.*)', StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'ventas')}))
     #Servicios Movil
 
 

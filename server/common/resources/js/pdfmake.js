@@ -34898,7 +34898,7 @@ var UniversalShaper = (_temp$3 = _class$7 = function (_DefaultShaper) {
 
     // Topographical features
     // Scripts that need this are handled by the Arabic shaper, not implemented here for now.
-    // plan.addStage(['isol', 'init', 'medi', 'fina', 'med2', 'fin2', 'fin3'], false);
+    // credito.addStage(['isol', 'init', 'medi', 'fina', 'med2', 'fin2', 'fin3'], false);
 
     // Standard topographic presentation and positional feature application
     plan.addStage(['abvs', 'blws', 'pres', 'psts', 'dist', 'abvm', 'blwm']);
@@ -35893,7 +35893,7 @@ var OTLayoutEngine = function () {
       script = this.GSUBProcessor.selectScript(glyphRun.script, glyphRun.language, glyphRun.direction);
     }
 
-    // Choose a shaper based on the script, and setup a shaping plan.
+    // Choose a shaper based on the script, and setup a shaping credito.
     // This determines which features to apply to which glyphs.
     this.shaper = choose(script);
     this.plan = new ShapingPlan(this.font, script, glyphRun.direction);

@@ -21,7 +21,7 @@ class UrbanizacionManager(SuperManager):
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().insert(objeto)
-        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Registro Urbanizacion.", fecha=fecha, tabla="urbanizacion",
+        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Registro Urbanizacion.", fecha=fecha, tabla="contrato",
                      identificador=a.id)
         super().insert(b)
 
@@ -33,9 +33,27 @@ class UrbanizacionManager(SuperManager):
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().update(objeto)
-        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Modifico Urbanizacion.", fecha=fecha,tabla="urbanizacion", identificador=a.id)
+        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Modifico Urbanizacion.", fecha=fecha,tabla="contrato", identificador=a.id)
         super().insert(b)
 
         return a
+
+    def delete(self, id, Usuario, ip,enable):
+        x = self.db.query(self.entity).filter(self.entity.id == id).first()
+
+        x.enabled = enable
+
+        if enable:
+            mensaje = "Se habilitó Urbanizacion."
+        else:
+            mensaje = "Se deshabilitó Urbanizacion."
+
+        fecha = BitacoraManager(self.db).fecha_actual()
+        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha)
+        super().insert(b)
+        self.db.merge(x)
+        self.db.commit()
+
+        return mensaje
 
 

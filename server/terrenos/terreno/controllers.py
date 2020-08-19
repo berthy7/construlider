@@ -1,5 +1,6 @@
 from .managers import *
 from server.common.controllers import CrudController
+from server.terrenos.urbanizacion.managers import *
 
 import json
 
@@ -13,9 +14,14 @@ class TerrenoController(CrudController):
         '/terreno': {'GET': 'index', 'POST': 'table'},
         '/terreno_insert': {'POST': 'insert'},
         '/terreno_update': {'PUT': 'edit', 'POST': 'update'},
-        '/terreno_delete': {'POST': 'delete'},
-        '/terreno_reporte': {'POST': 'imprimirxls'}
+        '/terreno_delete': {'POST': 'delete'}
     }
+
+    def get_extra_data(self):
+        aux = super().get_extra_data()
+        aux['urbanizaciones'] = UrbanizacionManager(self.db).listar_habilitados()
+
+        return aux
 
 
     def insert(self):

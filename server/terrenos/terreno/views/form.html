@@ -16,12 +16,33 @@
                             <label for="id" class="form-label">Terreno ID</label>
                         </div>
                     </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <label>Urbanizacion</label>
+                             <select id="fkurbanizacion" class="form-control">
+                                {% for urb in urbanizaciones %}
+                                    <option value="{{urb.id}}">{{urb.direccion}}</option>
+                                {% end %}
+                             </select>
+                        </div>
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <label>Manzanos</label>
+                             <select id="fkmanzano" name="Manzanos" class="form-control" required>
+
+                             </select>
+                        </div>
+                    </div>
+                    </br>
 
                     <div class="row clearfix">
                         <div class="col-sm-5">
-                            <label>Nombre</label>
+                            <label>Ancho</label>
                                 <div class="form-line">
-                                    <input id="nombre" name="Nombre" type="text" class="form-control txta-own" required >
+                                    <input id="ancho" name="Ancho" type="number" class="form-control txta-own" required >
                                 </div>
                         </div>
 
@@ -29,9 +50,9 @@
                     </br>
                     <div class="row clearfix">
                         <div class="col-sm-5">
-                            <label>Apellidos</label>
+                            <label>Largo</label>
                                 <div class="form-line">
-                                    <input id="apellidos" name="Apellidos" type="text" class="form-control txta-own" required >
+                                    <input id="largo" name="Largo" type="number" class="form-control txta-own" required >
                                 </div>
                         </div>
 
@@ -39,26 +60,14 @@
                     </br>
                     <div class="row clearfix">
                         <div class="col-sm-5">
-                            <label>Carnet de Identidad</label>
+                            <label>Superficie</label>
                                 <div class="form-line">
-                                    <input id="carnet" name="Carnet de Identidad" type="text" class="form-control txta-own" required>
+                                    <input id="superficie" name="Superficie" type="number" class="form-control txta-own" required>
                                 </div>
                         </div>
 
                     </div>
                     </br>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Telefono</label>
-                                <div class="form-line">
-                                    <input id="telefono" name="Telefono" type="number" class="form-control txta-own" required>
-                                </div>
-                        </div>
-
-                    </div>
-                    </br>
-
 
                      <div class="modal-footer">
                         {% if 'terreno_insert' in privileges %}

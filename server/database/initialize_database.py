@@ -8,6 +8,8 @@ from ..usuarios.scripts import insertions as user_insertions
 from ..clientes.scripts import insertions as clientes_insertions
 from ..terrenos.scripts import insertions as terrenos_insertions
 
+from ..ventas.scripts import insertions as ventas_insertions
+
 
 from server.database import connection
 from .models import Base
@@ -18,6 +20,8 @@ def main():
     user_insertions()
     clientes_insertions()
     terrenos_insertions()
+    ventas_insertions()
+
 
     print('Database created/updated correctly!')
 

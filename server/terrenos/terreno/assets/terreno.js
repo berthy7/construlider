@@ -56,12 +56,68 @@ function cargar_tabla(data){
     });
 }
 
+$('#fkurbanizacion').selectpicker({
+    size: 10,
+    liveSearch: true,
+    liveSearchPlaceholder: 'Buscar',
+    title: 'Seleccione'
+})
+
+$('#fkmanzano').selectpicker({
+    size: 10,
+    liveSearch: true,
+    liveSearchPlaceholder: 'Buscar',
+    title: 'Seleccione'
+})
+
+$('#fkurbanizacion').change(function () {
+
+    cargar_manzanos($('#fkurbanizacion').val())
+
+});
+
+
+function cargar_manzanos(idurbanizacion) {
+        obj = JSON.stringify({
+        'idurbanizacion': parseInt(idurbanizacion),
+        '_xsrf': getCookie("_xsrf")
+    })
+
+    ruta = "manzano_listar_x_urbanizacion";
+    //data.append('object', obj)
+    //data.append('_xsrf',getCookie("_xsrf"))
+
+    $.ajax({
+        method: "POST",
+        url: ruta,
+        data: {_xsrf: getCookie("_xsrf"), object: obj},
+        async: false
+    }).done(function (response) {
+        response = JSON.parse(response)
+
+        $('#fkmanzano').html('');
+        var select = document.getElementById("fkmanzano")
+        for (var i = 0; i < Object.keys(response.response).length; i++) {
+            var option = document.createElement("OPTION");
+            option.innerHTML = response['response'][i]['numero'] +" - "+response['response'][i]['calle1'];
+            option.value = response['response'][i]['id'];
+            select.appendChild(option);
+        }
+        $('#fkmanzano').selectpicker('refresh');
+
+    })
+
+}
+
 
 $('#new').click(function () {
-    $('#nombre').val('')
-    $('#apellidos').val('')
-    $('#carnet').val('')
-    $('#telefono').val('')
+    $('#ancho').val('')
+    $('#largo').val('')
+    $('#superficie').val('')
+    $('#fkurbanizacion').val('')
+    $('#fkurbanizacion').selectpicker('refresh')
+    $('#fkmanzano').val('')
+    $('#fkmanzano').selectpicker('refresh')
 
 
     verif_inputs('')
@@ -78,11 +134,10 @@ $('#insert').click(function () {
     notvalid = validationInputSelectsWithReturn("form");
     if (notvalid===false) {
         objeto = JSON.stringify({
-            'nombre': $('#nombre').val(),
-            'apellidos': $('#apellidos').val(),
-            'carnet': $('#carnet').val(),
-            'telefono': $('#telefono').val()
-         
+            'ancho': $('#ancho').val(),
+            'largo': $('#largo').val(),
+            'superficie': $('#superficie').val(),
+            'fkmanzano': $('#fkmanzano').val()
         })
         ajax_call('terreno_insert', {
             object: objeto,
@@ -113,12 +168,18 @@ function editar(elemento){
     }, function (response) {
         var self = response;
             $('#id').val(self.id)
-            $('#nombre').val(self.nombre)
-            $('#apellidos').val(self.apellidos)
-            $('#carnet').val(self.carnet)
-            $('#telefono').val(self.telefono)
+            $('#ancho').val(self.ancho)
+            $('#largo').val(self.largo)
+            $('#superficie').val(self.superficie)
+            $('#fkurbanizacion').val(self.manzano.fkurbanizacion)
+            $('#fkurbanizacion').selectpicker('refresh')
 
+            cargar_manzanos($('#fkurbanizacion').val())
 
+            $('#fkmanzano').val(self.fkmanzano)
+            $('#fkmanzano').selectpicker('refresh')
+
+        
             clean_form()
             verif_inputs('')
             validationInputSelects("form")
@@ -134,10 +195,10 @@ $('#update').click(function () {
     if (notvalid===false) {
         objeto = JSON.stringify({
             'id': parseInt($('#id').val()),
-            'nombre': $('#nombre').val(),
-            'apellidos': $('#apellidos').val(),
-            'carnet': $('#carnet').val(),
-            'telefono': $('#telefono').val()
+            'ancho': $('#ancho').val(),
+            'largo': $('#largo').val(),
+            'superficie': $('#superficie').val(),
+            'fkmanzano': $('#fkmanzano').val()
             
         })
         ajax_call('terreno_update', {
@@ -164,10 +225,10 @@ function eliminar(elemento){
     cb_delete = elemento
     b = $(elemento).prop('checked')
     if (!b) {
-        cb_title = "¿Deshabilitar Invitado?"
+        cb_title = "¿Deshabilitar Terreno?"
 
     } else {
-        cb_title = "¿Habilitar Invitado?"
+        cb_title = "¿Habilitar Terreno?"
     }
     swal({
         title: cb_title,

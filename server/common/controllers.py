@@ -128,7 +128,7 @@ class CrudController(MethodDispatcher):
 
     def edit(self):
         self.set_session()
-        self.verif_privileges()
+        # self.verif_privileges()
         ins_manager = self.manager(self.db)
         diccionary = json.loads(self.get_argument("object"))
         indicted_object = ins_manager.obtain(diccionary['id'])
