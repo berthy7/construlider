@@ -20,6 +20,7 @@ import os
 import re
 import platform
 import psutil
+import asyncio
 
 # import logging
 
@@ -79,6 +80,9 @@ def create_app():
     vaciar_puerto(puerto)
 
     port = int(os.getenv('PORT', puerto))
+
+    # if sys.platform == 'win32':
+    #     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
     settings = get_settings(config)
     Thread(target=launch_schedule).start()
