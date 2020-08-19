@@ -4,17 +4,13 @@ $(document).ready(function () {
 
 });
 
-
 $(document).ajaxStart(function () { });
 
 $(document).ajaxStop(function () {
     $.Toast.hideToast();
 });
 
-
-
 function cargar_tabla(data){
-
     if ( $.fn.DataTable.isDataTable( '#data_table' ) ) {
         var table = $('#data_table').DataTable();
         table.destroy();
@@ -46,7 +42,6 @@ function cargar_tabla(data){
         ],
         initComplete: function () {
 
-
         },
         "order": [[ 0, "asc" ]],
         language : {
@@ -57,71 +52,51 @@ function cargar_tabla(data){
 }
 
 function append_input_manzano(id_in) {
-
     $('#manzano_div').append(
-    '<div class="row">\
-        <div class="col-sm-1 hidden">\
-            <div class="input-group">\
-            <input  id="id'+id_in+'" class="form-control  idmanzano manzano readonly txta-own">\
+        '<div class="row">\
+            <div class="col-sm-1 hidden">\
+                <div class="input-group">\
+                <input  id="id'+id_in+'" class="form-control  idmanzano manzano readonly txta-own">\
+                </div>\
             </div>\
-        </div>\
-        <div class="col-sm-2">\
-            <div class="form-line">\
-            <input  id="numero'+id_in+'" class="form-control manzano txta-own">\
+            <div class="col-sm-2">\
+                <div class="form-line">\
+                <input  id="numero'+id_in+'" class="form-control manzano txta-own">\
+                </div>\
             </div>\
-        </div>\
-        <div class="col-sm-5">\
-            <div class="form-line">\
-                <input id="calle1'+id_in+'" data-id="'+id_in+'" class="form-control manzano  txta-own">\
+            <div class="col-sm-5">\
+                <div class="form-line">\
+                    <input id="calle1'+id_in+'" data-id="'+id_in+'" class="form-control manzano  txta-own">\
+                </div>\
             </div>\
-        </div>\
-        <div class="col-sm-5">\
-            <div  class="form-line">\
-                <input id="calle2'+id_in+'" data-id="'+id_in+'" class="form-control manzano  txta-own">\
+            <div class="col-sm-5">\
+                <div  class="form-line">\
+                    <input id="calle2'+id_in+'" data-id="'+id_in+'" class="form-control manzano  txta-own">\
+                </div>\
             </div>\
-        </div>\
-    </div>'
-)
+        </div>'
+    )
 
     $('.clear_vivienda').last().click(function () {
         $(this).parent().parent().remove()
     })
-
-
 }
 
 $('#new_manzano').click(function () {
+    parent_div = document.getElementById('manzano_div');
+    current_cant = $(parent_div).children().length;
+    cant_create = document.getElementById('numeroManzanos').value !== ''? parseInt(document.getElementById('numeroManzanos').value): 0;
+    dif_cant = cant_create - current_cant;
 
-
-    console.log("numero de manzanos: "+parseInt($('#numeroManzanos').val()))
-    console.log("numero manzanos creados: "+$('.idmanzano').length)
-
-    if(parseInt($('#numeroManzanos').val()) != parseInt($('.idmanzano').length)){
-
-        var cant = parseInt($('#numeroManzanos').val()) - parseInt($('.idmanzano').length)
-        console.log(cant)
-        if (cant > 0){
-            console.log("mayor a cero")
-            for (var i = 0; i < parseInt(cant); i++) {
-
-               append_input_manzano('')
-            }
-
-        }else{
-            console.log("menor a cero")
-
+    if (dif_cant > 0) {
+        for (var i = 0; i < dif_cant; i++) {
+            append_input_manzano('')
         }
-
-
-
-
-
+    } else if (dif_cant < 0) {
+        for (var j = current_cant; j > cant_create; j--) {
+            $( "#manzano_div div.row").last().remove()
+        }
     }
-
-
-
-
-
 })
 
 function get_manzano() {
@@ -135,16 +110,13 @@ function get_manzano() {
         h3 = objeto_inputs[i + 3].value
 
 
-        objeto.push((function add_(h0, h1, h2,h3) {
-
-            if (h0 ==''){
+        objeto.push((function add_(h0, h1, h2, h3) {
+            if (h0 === ''){
                 return {
                     'numero': h1,
                     'calle1': h2,
                     'calle2': h3
-
                 }
-
             }else{
                 return {
                 'id':h0,
@@ -153,19 +125,11 @@ function get_manzano() {
                 'calle2': h3
                 }
             }
-
-
-        })(
-            h0,
-            h1,
-            h2,
-            h3))
+        })( h0, h1, h2, h3))
     }
-
 
     return objeto
 }
-
 
 $('#new').click(function () {
     $('#direccion').val('')
@@ -173,7 +137,6 @@ $('#new').click(function () {
     $('#numeroCasas').val('')
     $('#numeroManzanos').val('')
     $('#manzano_div').empty()
-
 
     verif_inputs('')
     validationInputSelects("form")
@@ -184,17 +147,16 @@ $('#new').click(function () {
     $('#form').modal('show')
 })
 
-
 $('#insert').click(function () {
     notvalid = validationInputSelectsWithReturn("form");
-    if (notvalid===false) {
+
+    if (notvalid === false) {
         objeto = JSON.stringify({
             'direccion': $('#direccion').val(),
             'numeroTerrenos': $('#numeroTerrenos').val(),
+            'manzanos': get_manzano(),
             'numeroCasas': $('#numeroCasas').val(),
-            'numeroManzanos': $('#numeroManzanos').val(),
-            'manzanos': get_manzano()
-         
+            'numeroManzanos': $('#numeroManzanos').val()
         })
         ajax_call('urbanizacion_insert', {
             object: objeto,
@@ -214,7 +176,6 @@ $('#insert').click(function () {
     }
 })
 
-
 function editar(elemento){
     obj = JSON.stringify({
         'id': parseInt(JSON.parse($(elemento).attr('data-json')))
@@ -232,14 +193,12 @@ function editar(elemento){
             $('#manzano_div').empty()
 
             for (manza in self.manzanos) {
-
                 append_input_manzano(self.manzanos[manza]['id'])
                 $('#id' + self.manzanos[manza]['id']).val(self.manzanos[manza]['id'])
                 $('#numero' + self.manzanos[manza]['id']).val(self.manzanos[manza]['numero'])
                 $('#calle1' + self.manzanos[manza]['id']).val(self.manzanos[manza]['calle1'])
                 $('#calle2' + self.manzanos[manza]['id']).val(self.manzanos[manza]['calle2'])
             }
-
 
             clean_form()
             verif_inputs('')
@@ -249,19 +208,21 @@ function editar(elemento){
             $('#update').show()
             $('#form').modal('show')
     })
-    }
+}
 
 $('#update').click(function () {
     notvalid = validationInputSelectsWithReturn("form");
-    if (notvalid===false) {
+
+    if (notvalid === false) {
         objeto = JSON.stringify({
             'id': parseInt($('#id').val()),
             'direccion': $('#direccion').val(),
             'numeroTerrenos': $('#numeroTerrenos').val(),
             'numeroCasas': $('#numeroCasas').val(),
-            'numeroManzanos': $('#numeroManzanos').val()
-            
+            'numeroManzanos': $('#numeroManzanos').val(),
+            'manzanos': get_manzano()
         })
+        data = JSON.parse(objeto)
         ajax_call('urbanizacion_update', {
             object: objeto,
             _xsrf: getCookie("_xsrf")
@@ -281,13 +242,12 @@ $('#update').click(function () {
 })
 reload_form()
 
-
 function eliminar(elemento){
     cb_delete = elemento
     b = $(elemento).prop('checked')
+
     if (!b) {
         cb_title = "¿Deshabilitar Urbanizacion?"
-
     } else {
         cb_title = "¿Habilitar Urbanizacion?"
     }
@@ -301,6 +261,7 @@ function eliminar(elemento){
         cancelButtonText: "Cancelar"
     }).then(function () {
         $(cb_delete).prop('checked', !$(cb_delete).is(':checked'))
+
         objeto = JSON.stringify({
             id: parseInt($(cb_delete).attr('data-id')),
             enabled: $(cb_delete).is(':checked')
@@ -317,8 +278,5 @@ function eliminar(elemento){
     })
 }
 
-
-
 validationKeyup("form")
 validationSelectChange("form")
-
