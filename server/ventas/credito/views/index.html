@@ -14,11 +14,11 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
-            {% if 'credito_insert' in privileges %}
-                <button id="new" type="button" class="btn bg-indigo waves-effect white-own">Nuevo <i class="material-icons"></i></button>
-            {% end %}
-            </div>
+{#            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">#}
+{#            {% if 'credito_insert' in privileges %}#}
+{#                <button id="new" type="button" class="btn bg-indigo waves-effect white-own">Nuevo <i class="material-icons"></i></button>#}
+{#            {% end %}#}
+{#            </div>#}
             {% if 'credito_query' in privileges %}
         </div>
 
@@ -28,12 +28,12 @@
                     <thead>
                         <tr>
                             <th class="order_by_th accion" data-name="name">Nro</th>
-                            <th class="order_by_th accion" data-name="name">Urbanizacion</th>
-                            <th class="order_by_th accion" data-name="name">Manzano</th>
-                            <th class="order_by_th accion" data-name="name">Ancho</th>
-                            <th class="order_by_th accion" data-name="description">Largo</th>
-                            <th class="order_by_th accion" data-name="description">Superficie</th>
-                            <th class="actions_header">Estado</th>
+                            <th class="order_by_th accion" data-name="name">Cliente</th>
+                            <th class="order_by_th accion" data-name="name">Monto</th>
+                            <th class="order_by_th accion" data-name="name">Nro Cuotas</th>
+                            <th class="order_by_th accion" data-name="name">Entidad</th>
+                            <th class="order_by_th accion" data-name="name">Estado</th>
+                            <th class="actions_header">Activo</th>
                             <th class="actions_header">Acciones</th>
                         </tr>
                     </thead>
@@ -51,28 +51,26 @@
     <script src="resources/js/validations.js"></script>
     <script src="resources/js/functions.js"></script>
     <script src="ventas/credito/assets/credito.js"></script>
-<script>
-        $(document).ready(function () {
+    <script>
+            $(document).ready(function () {
+                var data = [];
+                {% set cont = 0 %}
+                // Solo se puede acceder a creditos desde interpolacion de python
+                {% for c in creditos %}
+                    data.push( [
+                        '{{ c['id'] }}',
+                        '{{ c['cliente'] }}',
+                        '{{ c['capital'] }} {{ c['moneda'] }}',
+                        '{{ c['numeroCuotas'] }}',
+                        '{{ c['entidad'] }}',
+                        '{{ c['estadoCredito'] }}',
+                        '<input id="{{ c['id'] }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c['id'] }}" type="checkbox" class="chk-col-indigo delete" {% if c['enabled'] %} {{"checked"}} {% end %} /><label for="{{ c['id'] }}"></label>',
+                        '<button id="edit" onClick="editar(this)" data-json="{{ c['id'] }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
 
-            var data = [];
-            {% set cont = 0 %}
-            {% for c in objects %}
-                data.push( [
-                    '{{ c.id }}',
-                    '{{ c.manzano.urbanizacion.direccion }}',
-                    '{{ c.manzano.numero }}',
-                     '{{ c.ancho }}',
-                     '{{ c.largo }}',
-                     '{{ c.superficie }}',
-                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
-                    '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
-
-                ]);
-            {% set cont = cont + 1 %}
-            {% end %}
-            cargar_tabla(data)
-        })
-
-
-</script>
+                    ]);
+                {% set cont = cont + 1 %}
+                {% end %}
+                cargar_tabla(data)
+            })
+    </script>
 {%end%}

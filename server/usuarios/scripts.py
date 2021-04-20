@@ -106,7 +106,7 @@ def insertions():
         super_user = session.query(Usuario).filter(Usuario.username == 'admin').first()
         if super_user is None:
             # hex_dig = hashlib.sha512(b'Password2020').hexdigest()
-            hex_dig = hashlib.sha512(b'admin').hexdigest()
+            hex_dig = hashlib.sha512(b'Construlider2020').hexdigest()
             super_user = Usuario(username='admin', password=hex_dig)
             super_user.rol = admin_role
 

@@ -10,7 +10,7 @@ from tornado.httpserver import *
 from tornado.ioloop import IOLoop
 import schedule
 
-# from .dispositivos.scripts import dispositivos_schedule
+from .ventas.scripts import ventas_schedule
 
 from .common.controllers import Error404Handler
 from server.routes import get_handlers
@@ -96,6 +96,8 @@ def create_app():
 
 
 def launch_schedule():
+    ventas_schedule()
+
 
     while True:
         schedule.run_pending()

@@ -18,24 +18,24 @@ class ManzanoManager(SuperManager):
             .order_by(self.entity.numero.asc()).all()
 
 
-    def insert(self, diccionary):
-        objeto = ManzanoManager(self.db).entity(**diccionary)
+    def insert(self, dictionary):
+        objeto = ManzanoManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().insert(objeto)
-        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Registro Manzano.", fecha=fecha, tabla="cliente",
+        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Registro Manzano.", fecha=fecha, tabla="manzano",
                      identificador=a.id)
         super().insert(b)
 
 
         return a
 
-    def update(self, diccionary):
-        objeto = ManzanoManager(self.db).entity(**diccionary)
+    def update(self, dictionary):
+        objeto = ManzanoManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().update(objeto)
-        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Modifico Manzano.", fecha=fecha,tabla="cliente", identificador=a.id)
+        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Modifico Manzano.", fecha=fecha,tabla="manzano", identificador=a.id)
         super().insert(b)
 
         return a
@@ -51,7 +51,7 @@ class ManzanoManager(SuperManager):
             mensaje = "Se deshabilitó Manzano."
 
         fecha = BitacoraManager(self.db).fecha_actual()
-        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha)
+        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha,tabla="manzano", identificador=id)
         super().insert(b)
         self.db.merge(x)
         self.db.commit()

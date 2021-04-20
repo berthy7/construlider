@@ -1,9 +1,6 @@
 main_route = '/cliente'
 
-$(document).ready(function () {
-
-});
-
+$(document).ready(function () {});
 
 $(document).ajaxStart(function () { });
 
@@ -11,10 +8,7 @@ $(document).ajaxStop(function () {
     $.Toast.hideToast();
 });
 
-
-
 function cargar_tabla(data){
-
     if ( $.fn.DataTable.isDataTable( '#data_table' ) ) {
         var table = $('#data_table').DataTable();
         table.destroy();
@@ -25,43 +19,31 @@ function cargar_tabla(data){
         deferRender:    true,
         scrollCollapse: true,
         scroller:       true,
+          columnDefs: [
+            {
+                targets: 3,
+                className: 'text-center'
+            },
+            {
+                targets: 4,
+                className: 'text-center'
+            }
+          ],
 
-        dom: "Bfrtip" ,
-        buttons: [
-            // {  extend : 'excelHtml5',
-            //    exportOptions : { columns : [0, 1, 2, 3, 4, 5 ,6 ,7]},
-            //     sheetName: 'Reporte Areas Sociales',
-            //    title: 'reas Sociales'  },
-            // {  extend : 'pdfHtml5',
-            //     orientation: 'landscape',
-            //    customize: function(doc) {
-            //         doc.styles.tableBodyEven.alignment = 'center';
-            //         doc.styles.tableBodyOdd.alignment = 'center';
-            //    },
-            //    exportOptions : {
-            //         columns : [0, 1, 2, 3, 4, 5 ,6 ,7]
-            //     },
-            //    title: 'reas Sociales'
-            // }
-        ],
-        initComplete: function () {
-
-
-        },
         "order": [[ 2, "asc" ]],
         language : {
             'url': '/resources/js/spanish.json',
         },
-        "pageLength": 50
+        "pageLength": 25
     });
 }
-
 
 $('#new').click(function () {
     $('#nombre').val('')
     $('#apellidos').val('')
     $('#carnet').val('')
     $('#telefono').val('')
+    $('#email').val('')
 
 
     verif_inputs('')
@@ -73,7 +55,6 @@ $('#new').click(function () {
     $('#form').modal('show')
 })
 
-
 $('#insert').click(function () {
     notvalid = validationInputSelectsWithReturn("form");
     if (notvalid===false) {
@@ -81,7 +62,8 @@ $('#insert').click(function () {
             'nombre': $('#nombre').val(),
             'apellidos': $('#apellidos').val(),
             'carnet': $('#carnet').val(),
-            'telefono': $('#telefono').val()
+            'telefono': $('#telefono').val(),
+            'email': $('#email').val()
          
         })
         ajax_call('cliente_insert', {
@@ -102,8 +84,7 @@ $('#insert').click(function () {
     }
 })
 
-
-function editar(elemento){
+function editar(elemento) {
     obj = JSON.stringify({
         'id': parseInt(JSON.parse($(elemento).attr('data-json')))
     })
@@ -112,22 +93,23 @@ function editar(elemento){
         object: obj
     }, function (response) {
         var self = response;
-            $('#id').val(self.id)
-            $('#nombre').val(self.nombre)
-            $('#apellidos').val(self.apellidos)
-            $('#carnet').val(self.carnet)
-            $('#telefono').val(self.telefono)
+        $('#id').val(self.id)
+        $('#nombre').val(self.nombre)
+        $('#apellidos').val(self.apellidos)
+        $('#carnet').val(self.carnet)
+        $('#telefono').val(self.telefono)
+        $('#email').val(self.email)
 
 
-            clean_form()
-            verif_inputs('')
-            validationInputSelects("form")
-            $('#id_div').hide()
-            $('#insert').hide()
-            $('#update').show()
-            $('#form').modal('show')
+        clean_form()
+        verif_inputs('')
+        validationInputSelects("form")
+        $('#id_div').show()
+        $('#insert').hide()
+        $('#update').show()
+        $('#form').modal('show')
     })
-    }
+}
 
 $('#update').click(function () {
     notvalid = validationInputSelectsWithReturn("form");
@@ -137,7 +119,8 @@ $('#update').click(function () {
             'nombre': $('#nombre').val(),
             'apellidos': $('#apellidos').val(),
             'carnet': $('#carnet').val(),
-            'telefono': $('#telefono').val()
+            'telefono': $('#telefono').val(),
+            'email': $('#email').val()
             
         })
         ajax_call('cliente_update', {
@@ -157,23 +140,23 @@ $('#update').click(function () {
         )
     }
 })
+
 reload_form()
 
-
-function eliminar(elemento){
+function eliminar(elemento) {
     cb_delete = elemento
     b = $(elemento).prop('checked')
     if (!b) {
-        cb_title = "¿Deshabilitar Invitado?"
+        cb_title = "¿Deshabilitar Cliente?"
 
     } else {
-        cb_title = "¿Habilitar Invitado?"
+        cb_title = "¿Habilitar Cliente?"
     }
     swal({
         title: cb_title,
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#393939",
+        confirmButtonColor: "#424A5A",
         cancelButtonColor: "#F44336",
         confirmButtonText: "Aceptar",
         cancelButtonText: "Cancelar"
@@ -194,8 +177,6 @@ function eliminar(elemento){
         $('#form').modal('hide')
     })
 }
-
-
 
 validationKeyup("form")
 validationSelectChange("form")

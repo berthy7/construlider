@@ -151,7 +151,7 @@ $('.enabled').click(function (e) {
         title: cb_title,
         type: cb_type,
         showCancelButton: true,
-        confirmButtonColor: "#393939",
+        confirmButtonColor: "#424A5A",
         cancelButtonColor: "#F44336",
         confirmButtonText: "Aceptar",
         cancelButtonText: "Cancelar"

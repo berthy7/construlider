@@ -1,0 +1,172 @@
+<div id="form" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content">
+            <form id="form_submit" class="new" enctype="multipart/form-data" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 id="user_title" class="modal-title">Registrar Pago</h3>
+                    <h4 id="user_enable" class=""></h4>
+                </div>
+
+                <div class="modal-body">
+                    <div  id="user_form_body" class="box-body">
+                        <div id="id_div">
+                            <div class="row clearfix">
+                                <div class="col-sm-4">
+                                    <label class="form-label">Nro</label>
+                                    <div class="form-line">
+                                        {% module xsrf_form_html() %}
+                                        <input id="id" type="text" class="form-control" disabled="disabled">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                <label>Clientes</label>
+                                 <select id="fkcliente" class="form-control" required>
+                                    {% for cli in clientes %}
+                                        <option value="{{cli.id}}">{{cli.carnet}} {{cli.fullname}}</option>
+                                    {% end %}
+                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                <label>Credito</label>
+                                <select id="fkcredito" class="form-control" required>
+                                </select>
+                            </div>
+                        </div>
+
+                          <div class="row clearfix">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                  <div class="header">
+                                      <span>Detalle cuota</span>
+                                    </div>
+                                  <input id="fkcuota" type="hidden">
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <p>Numero: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                           <p id="label_numero_cuota"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <p>Monto Inicial: </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p id="label_monto_cuota_inicial"></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="moneda"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <p>Monto por pagar: </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p id="label_monto_cuota_parcial"></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="moneda"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <p>Fecha Vencimiento: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                           <p id="label_fecha_vencimiento"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <p>Estado: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                           <p id="label_estado_cuota"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+                        <div class="row clearfix">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                  <div class="header">
+                                      <span class="card-title">Detalle Pago</span>
+                                    </div>
+                                <div class="body">
+                                    <div class="row clearfix">
+                                        <div class="col-sm-5">
+                                            <label>Tipo pago</label>
+                                             <select id="fktipopago" class="form-control" required>
+                                                {% for tipopag in tipopagos %}
+                                                    <option value="{{tipopag.id}}">{{tipopag.nombre}}</option>
+                                                {% end %}
+                                             </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-5">
+                                            <label>Monto</label>
+                                                <div class="form-line">
+                                                    <input id="monto" name="Monto" type="number" class="form-control txta-own" required >
+                                                </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label></label>
+                                             <select id="fkmoneda" class="form-control">
+                                                {% for mone in monedas %}
+                                                    <option value="{{mone.id}}">{{mone.nombre}}</option>
+                                                {% end %}
+                                             </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-6">
+                                            <label class="form-label">Foto Comprobante: </label>
+                                            <input id="fotoComprobante" name="archivo" type="file" class="file form-control" width='300px' />
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+
+
+
+                         <div class="modal-footer">
+                            {% if 'pago_insert' in privileges %}
+                                <button id="insert" type="submit" class="btn bg-indigo waves-effect white-own">Guardar <i class="material-icons white-own">save</i></button>
+                            {% end %}
+                            {% if 'pago_update' in privileges %}
+                                <button id="update" type="submit" class="btn bg-indigo waves-effect white-own">Modificar <i class="material-icons white-own">refresh</i></button>
+                            {% end %}
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

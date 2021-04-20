@@ -1,3 +1,18 @@
 .color_boton{
     background-color: #424A5A !important;
 }
+
+
+.centrar_tabla{
+    align:"center" !important;
+
+}
+
+.bg-alarm{
+    background-color: #ff6b66 !important;
+
+}
+
+.clearfix {
+    margin-bottom: 5px;
+}

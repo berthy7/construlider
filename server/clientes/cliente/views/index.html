@@ -27,14 +27,14 @@
                 <table id="data_table" class="table table-bordered table-striped table-hover">
                     <thead>
                         <tr>
-                            <th class="order_by_th accion" data-name="name">Nro </th>
-                            <th class="order_by_th accion" data-name="name">Nombre </th>
-                            <th class="order_by_th accion" data-name="description">telefono </th>
-                            <th class="order_by_th accion" data-name="description">Estado </th>
+                            <th class="order_by_th accion" data-name="name">Nro</th>
+                            <th class="order_by_th accion" data-name="name">Nombre</th>
+                            <th class="order_by_th accion" data-name="description">Telefono</th>
+                            <th class="order_by_th accion"  data-name="description">Email</th>
+                            <th class="order_by_th accion"  data-name="description">Estado</th>
                             <th class="actions_header">Acciones</th>
                         </tr>
                     </thead>
-
                 </table>
             </div>
         </div>
@@ -56,11 +56,11 @@
             {% for c in objects %}
                 data.push( [
                     '{{ c.id }}',
-                    '{{ c.username }}',
+                    '{{ c.fullname }}',
                     '{{ c.telefono}}',
-                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
+                    '{% if c.email %} {{ c.email}} {% else %} ----- {% end %}',
+                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>',
                     '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
-
                 ]);
             {% set cont = cont + 1 %}
             {% end %}

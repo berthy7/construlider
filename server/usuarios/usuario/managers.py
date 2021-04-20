@@ -35,23 +35,20 @@ class UsuarioManager(SuperManager):
         return self.db.query(Usuario).filter(Usuario.nombre == "Administrador").one()
 
 
-    def insert(self, diccionary):
+    def insert(self, dictionary):
 
-        diccionary['password']= hashlib.sha512(diccionary['password'].encode()).hexdigest()
+        dictionary['password']= hashlib.sha512(dictionary['password'].encode()).hexdigest()
 
-        usuario = UsuarioManager(self.db).entity(**diccionary)
-        user = self.db.query(Usuario).filter(Usuario.username == usuario.username).first()
+        usuario = UsuarioManager(self.db).entity(**dictionary)
+        # user = self.db.query(Usuario).filter(Usuario.username == usuario.username).first()
 
-        if user:
-            return dict(respuesta=False, Mensaje="Nombre de Usuario ya Existe")
 
-        else:
+        fecha = BitacoraManager(self.db).fecha_actual()
+        a = super().update(usuario)
+        b = Bitacora(fkusuario=usuario.user_id, ip=usuario.ip, accion="Se registró un usuario.", fecha=fecha)
+        super().insert(b)
 
-            fecha = BitacoraManager(self.db).fecha_actual()
-            b = Bitacora(fkusuario=usuario.user_id, ip=usuario.ip, accion="Se registró un usuario.", fecha=fecha)
-            super().insert(b)
-
-            return dict(respuesta=True, Mensaje="Insertado Correctamente")
+        return a
 
 
     def update(self, usuario):
@@ -112,7 +109,7 @@ class UsuarioManager(SuperManager):
         return privileges
 
     def list_all(self):
-        return dict(objects=self.db.query(Usuario).filter(Usuario.fkrol == Rol.id).filter(Rol.nombre != "Super Administrador").distinct())
+        return dict(objects=self.db.query(Usuario).filter(Usuario.fkrol == Rol.id).filter(Rol.nombre != "ADMINISTRADOR").distinct())
 
     def has_access(self, id, route):
         aux = self.db.query(Usuario.id).\
@@ -159,7 +156,24 @@ class UsuarioManager(SuperManager):
 
 
     def listar_todo(self):
-        return self.db.query(Usuario).filter(Usuario.enabled == True).all()
+        return self.db.query(Usuario).filter(Usuario.enabled == True).filter(Usuario.id != 1).all()
+
+    def update_profile(self, Usuarioprf):
+        usuario = self.db.query(Usuario).filter_by(id=Usuarioprf['id']).first()
+
+        existe_usuario = self.db.query(Usuario).filter(Usuario.username == Usuarioprf['username']).first()
+        if existe_usuario is None:
+
+            usuario.username = Usuarioprf['username']
+            self.db.merge(usuario)
+            b = Bitacora(fkusuario=usuario.id, ip=Usuarioprf['ip'], accion="Se actualizó perfil de usuario.", fecha=fecha_zona, tabla='usuario', identificador=usuario.id)
+            super().insert(b)
+            self.db.commit()
+
+            return True
+
+        else:
+            return False
 
 
 
@@ -173,26 +187,26 @@ class UsuarioManager(SuperManager):
             return dict(respuesta=False)
 
 
-    def actualizar_credenciales(self, diccionary):
-        usuario = UsuarioManager(self.db).get_by_pass(diccionary['user'])
-        old_password = hashlib.sha512(diccionary['password'].encode()).hexdigest()
+    def actualizar_credenciales(self, dictionary):
+        usuario = UsuarioManager(self.db).get_by_pass(dictionary['user'])
+        old_password = hashlib.sha512(dictionary['password'].encode()).hexdigest()
         if usuario.password == old_password:
-            usuario.password = diccionary['nuevo_password']
+            usuario.password = dictionary['nuevo_password']
             if not usuario.password or usuario.password == '':
                 usuario.password = (self.db.query(Usuario.password)
                                     .filter(Usuario.id == usuario.id).first())[0]
             else:
                 usuario.password = hashlib.sha512(usuario.password.encode()).hexdigest()
 
-            if diccionary['username'] or diccionary['username'] != '':
-                usuario.username = diccionary['username']
+            if dictionary['username'] or dictionary['username'] != '':
+                usuario.username = dictionary['username']
 
 
             fecha = BitacoraManager(self.db).fecha_actual()
             us = self.db.merge(usuario)
             self.db.commit()
 
-            b = Bitacora(fkusuario=diccionary['user'], ip=diccionary['ip'], accion="Modificó Credenciales", fecha=fecha,
+            b = Bitacora(fkusuario=dictionary['user'], ip=dictionary['ip'], accion="Modificó Credenciales", fecha=fecha,
                          tabla="usuario", identificador=usuario.id)
             super().insert(b)
 
@@ -203,8 +217,8 @@ class UsuarioManager(SuperManager):
                 url = "http://sistemacondominio.herokuapp.com/api/v1/actualizar_credenciales"
 
                 headers = {'Content-Type': 'application/json'}
-                diccionary['user'] = us.codigo
-                cadena = json.dumps(diccionary)
+                dictionary['user'] = us.codigo
+                cadena = json.dumps(dictionary)
                 body = cadena
                 resp = requests.post(url, data=body, headers=headers, verify=False)
                 response = json.loads(resp.text)
@@ -214,11 +228,11 @@ class UsuarioManager(SuperManager):
             return dict(response=None,success=False,message="Password Incorrecto")
 
 
-    def restablecer_password(self, diccionary):
+    def restablecer_password(self, dictionary):
 
-        usuario = UsuarioManager(self.db).get_by_pass(diccionary['idusuario'])
+        usuario = UsuarioManager(self.db).get_by_pass(dictionary['idusuario'])
 
-        nuevo_password = hashlib.sha512(diccionary['password'].encode()).hexdigest()
+        nuevo_password = hashlib.sha512(dictionary['password'].encode()).hexdigest()
 
         usuario.password = nuevo_password
 
@@ -226,11 +240,11 @@ class UsuarioManager(SuperManager):
         fecha = BitacoraManager(self.db).fecha_actual()
         u = super().update(usuario)
 
-        b = Bitacora(fkusuario=diccionary['user'], ip=diccionary['ip'], accion="Restablecio Password", fecha=fecha,
+        b = Bitacora(fkusuario=dictionary['user'], ip=dictionary['ip'], accion="Restablecio Password", fecha=fecha,
                      tabla="usuario", identificador=usuario.id)
         super().insert(b)
 
-        UsuarioManager(self.db).correo_password_reinicio(u, diccionary['password'])
+        UsuarioManager(self.db).correo_password_reinicio(u, dictionary['password'])
 
         return dict(response=None, success=True, message="Actualizado Correctamente")
 

@@ -117,10 +117,13 @@ class CrudController(MethodDispatcher):
         super().post()
 
     def index(self):
+        print('Entró a index')
         self.set_session()
         self.verif_privileges()
         usuario = self.get_user()
         result = self.manager(self.db).list_all()
+        ob = result['objects']
+        # print(ob.__dict__)
         result['privileges'] = UsuarioManager(self.db).get_privileges(self.get_user_id(), self.request.uri)
         result.update(self.get_extra_data())
         self.render(self.html_index, **result)
@@ -130,8 +133,8 @@ class CrudController(MethodDispatcher):
         self.set_session()
         # self.verif_privileges()
         ins_manager = self.manager(self.db)
-        diccionary = json.loads(self.get_argument("object"))
-        indicted_object = ins_manager.obtain(diccionary['id'])
+        dictionary = json.loads(self.get_argument("object"))
+        indicted_object = ins_manager.obtain(dictionary['id'])
         if len(ins_manager.errors) == 0:
             self.respond(indicted_object.get_dict(), message='Operacion exitosa!')
         else:
@@ -142,8 +145,8 @@ class CrudController(MethodDispatcher):
         self.set_session()
         self.verif_privileges()
         ins_manager = self.manager(self.db)
-        diccionary = json.loads(self.get_argument("object"))
-        object = ins_manager.entity(**diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        object = ins_manager.entity(**dictionary)
         indicted_object = ins_manager.insert(object)
         if len(ins_manager.errors) == 0:
             self.respond(indicted_object.get_dict(), message='Insertado correctamente!')
@@ -155,8 +158,8 @@ class CrudController(MethodDispatcher):
         self.set_session()
         self.verif_privileges()
         ins_manager = self.manager(self.db)
-        diccionary = json.loads(self.get_argument("object"))
-        object = ins_manager.entity(**diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        object = ins_manager.entity(**dictionary)
         indicted_object = ins_manager.update(object)
         if len(ins_manager.errors) == 0:
             self.respond(indicted_object.get_dict(), message='Actualizado correctamente!')

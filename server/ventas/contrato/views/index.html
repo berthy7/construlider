@@ -10,7 +10,7 @@
         {% include form.html %}
     {% end %}
 
-    <div class="header "><h2 class="title-rg-own">Contrato</h2></div>
+    <div class="header "><h2 class="title-rg-own">Ventas</h2></div>
 
     <div class="body">
         <div class="row clearfix">
@@ -28,7 +28,12 @@
                     <thead>
                         <tr>
                             <th class="order_by_th accion" data-name="name">Nro</th>
-                            <th class="order_by_th accion" data-name="name">Direccion</th>
+                            <th class="order_by_th accion" data-name="name">Fecha</th>
+                            <th class="order_by_th accion" data-name="name">Cliente</th>
+                            <th class="order_by_th accion" data-name="name">Tipo venta</th>
+                            <th class="order_by_th accion" data-name="name">Credito</th>
+                            <th class="order_by_th accion" data-name="name">Monto</th>
+                            <th class="order_by_th accion" data-name="name">Nro cuotas</th>
                             <th class="actions_header">Estado</th>
                             <th class="actions_header">Acciones</th>
                         </tr>
@@ -55,9 +60,14 @@
             {% for c in objects %}
                 data.push( [
                     '{{ c.id }}',
+                    '{{ c.fecha.strftime('%d/%m/%Y') }}',
+                    '{{ c.reserva.cliente.fullname }}',
+                    '{{ c.tipoventa.nombre }}',
+                    '{{ c.fkcredito }}',
+                    '{{ c.monto }} {{ c.moneda.codigo }}',
                     '{{ c.numeroCuotas }}',
 
-                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
+                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>',
                     '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
 
                 ]);

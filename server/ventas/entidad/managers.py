@@ -10,11 +10,11 @@ class EntidadManager(SuperManager):
         super().__init__(Entidad, db)
 
     def listar_todo(self):
-        return self.db.query(self.entity).filter(self.entity.estado == True).order_by(self.entity.nombre.asc()).all()
+        return self.db.query(self.entity).filter(self.entity.enabled == True).order_by(self.entity.nombre.asc()).all()
 
 
-    def insert(self, diccionary):
-        objeto = EntidadManager(self.db).entity(**diccionary)
+    def insert(self, dictionary):
+        objeto = EntidadManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().insert(objeto)
@@ -25,8 +25,8 @@ class EntidadManager(SuperManager):
 
         return a
 
-    def update(self, diccionary):
-        objeto = EntidadManager(self.db).entity(**diccionary)
+    def update(self, dictionary):
+        objeto = EntidadManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().update(objeto)
@@ -47,7 +47,7 @@ class EntidadManager(SuperManager):
             mensaje = "Se deshabilitó Entidad."
 
         fecha = BitacoraManager(self.db).fecha_actual()
-        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha)
+        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha,tabla="entidad", identificador=id)
         super().insert(b)
         self.db.merge(x)
         self.db.commit()

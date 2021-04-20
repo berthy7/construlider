@@ -172,7 +172,6 @@ function verif_inputs(nombre) {
 }
 
 
-
 function reload_form() {
     //Tooltip
 //    $('[data-toggle="tooltip"]').tooltip({

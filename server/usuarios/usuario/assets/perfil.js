@@ -76,8 +76,8 @@ function Modificar_Perfil() {
         } else {
             swal(
                 'Perfil no modificado.',
-                'No se modificó el perfil de usuario.',
-                'error'
+                'Nombre de usuario en uso, ingrese uno nuevo',
+                'warning'
             )
         }
     })

@@ -3,97 +3,269 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 id="user_title" class="modal-title">Ingreso Urbanizacion</h3>
+                <h3 id="user_title" class="modal-title">Registrar Venta</h3>
                 <h4 id="user_enable" class=""></h4>
             </div>
 
             <div class="modal-body">
                 <div  id="user_form_body" class="box-body">
-                    <div id="id_div" class="form-group">
-                        <div class="form-line">
-                            {% module xsrf_form_html() %}
-                            <input id="id" type="text" class="form-control" disabled="disabled">
-                            <label for="id" class="form-label">Urbanizacion ID</label>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Direccion</label>
+                    <div id="id_div">
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <label class="form-label">Nro</label>
                                 <div class="form-line">
-                                    <input id="direccion" name="Direccion" type="text" class="form-control txta-own" required >
+                                    {% module xsrf_form_html() %}
+                                    <input id="id" type="text" class="form-control" disabled="disabled">
+                                    <input id="fkmoneda" type="hidden">
+                                    <input id="fkcredito" type="hidden">
                                 </div>
-                        </div>
-
-                    </div>
-                    </br>
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Numero Terrenos</label>
-                                <div class="form-line">
-                                    <input id="numeroTerrenos" name="Numero Terrenos" type="text" class="form-control txta-own" required >
-                                </div>
-                        </div>
-
-                    </div>
-                    </br>
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Numero Casas</label>
-                                <div class="form-line">
-                                    <input id="numeroCasas" name="Numero Casas" type="text" class="form-control txta-own" required>
-                                </div>
-                        </div>
-
-                    </div>
-                    </br>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Numero Manzanos</label>
-                                <div class="form-line">
-                                    <input id="numeroManzanos" name="Numero Manzanos" type="number" class="form-control txta-own" required>
-                                </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <button id="new_manzano" type="button" class="btn bg-indigo waves-effect white-own" title="Agregar">
-                                    <i class="material-icons">add</i>
-                                </button>
                             </div>
-                       </div>
-
-                    </div>
-                    </br>
-                    <div class="row clearfix">
-                       <div class="col-sm-4">
-                            <label class="form-label">Manzanos</label>
-                       </div>
-
-                    </div>
-                    <div class="row clearfix">
-                        <div class="col-sm-2">
-                            <label class="form-label">Numero</label>
                         </div>
-                        <div class="col-sm-4">
-                            <label class="form-label">Calle 1</label>
-                        </div>
-                        <div class="col-sm-3">
-                            <label class="form-label">Calle 2</label>
-                        </div>
-
                     </div>
+
                     <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <label>Reservas</label>
+                             <select id="fkreserva" class="form-control" required>
+                             </select>
+                        </div>
+                    </div>
 
-                       <div class="col-sm-9">
-                             <div id="manzano" class="box-body">
-                                <div id="manzano_div" class="clearfix">
-
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="header">
+                                    <span>Detalle reserva</span>
                                 </div>
-                             </div>
-                       </div>
-                    </div>
 
+                                <div class="body">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Fecha: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                        <p id="label_fecha_reserva"></p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Cliente: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p id="label_cliente"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Urbanizacion: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                        <p id="label_urbanizacion"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Manzano: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p id="label_manzano"></p>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Tipo: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p id="label_tipo_terreno"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Superficie: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p id="label_superficie"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Valor m<sup>2</sup>: </p>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <p id="label_valor_metro2"></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="moneda"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Valor del terreno: </p>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <p id="label_valor_terreno"></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="moneda"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Monto reserva: </p>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <p id="label_monto"></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="moneda"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                          <div class="card">
+                              <div class="header">
+                                <span>Credito</span>
+                              </div>
+
+                                <div class="body">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Tasa de interes: </p>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <p id="label_tasa_interes"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Interes: </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p id="label_interes"></p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p class="moneda"></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <p>Valor del Credito: </p>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <p id="label_valor_credito"></label>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label class="moneda"></label>
+                                        </div>
+                                    </div>
+                                    </br>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <label>Tipo de Venta</label>
+                                            <select id="fktipoventa" class="form-control" required>
+                                                {% for tipoventa in tipoventas %}
+                                                    <option value="{{tipoventa.id}}">{{tipoventa.nombre}}</option>
+                                                {% end %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <label>Entidad</label>
+                                            <select id="fkentidad" class="form-control" required>
+                                                {% for enti in entidades %}
+                                                    <option value="{{enti.id}}">{{enti.nombre}}</option>
+                                                {% end %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <label>Cuota Inicial</label>
+                                                <div class="form-line">
+                                                    <input id="cuotaInicial" name="Cuota Inicial" type="number" class="form-control txta-own " >
+                                                </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <label>Numero Cuotas</label>
+                                                <div class="form-line">
+                                                    <input id="numeroCuotas" name="Numero Manzanos" type="number" min="0" class="form-control txta-own" required>
+                                                </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label></label>
+                                            <div class="form-group">
+                                                <button id="new_cuotas" type="button" class="btn bg-indigo waves-effect white-own" title="Agregar">
+                                                    Registrar cuotas
+                                                </button>
+                                            </div>
+                                    </div>
+
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                            <label>Fecha 1er cuota</label>
+                                                <div class="form-line">
+                                                    <input id="fechaPrimerCuota" name="Fecha 1er cuota" type="text" class="form-control txta-own date" required >
+                                                </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-4">
+                                                <label class="form-label">Cuotas</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-2">
+                                            <label class="form-label">Numero</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="form-label">Monto</label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <label class="form-label">Fecha venc.</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row clearfix">
+                                        <div class="col-sm-9">
+                                                <div id="cuotas" class="box-body">
+                                                    <div id="cuota_div" class="clearfix">
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                        </div>
+                      </div>
 
                      <div class="modal-footer">
                         {% if 'contrato_insert' in privileges %}

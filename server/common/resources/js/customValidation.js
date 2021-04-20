@@ -80,7 +80,7 @@ function validationInputSelectsWithReturn(id) {
 
     for (var i = 0; i < elementsSelect.length; i++) {
         if (!elementsSelect[i].checkValidity()) {
-            console.log(elementsSelect[i])
+            // console.log(elementsSelect[i])
             printError(elementsSelect[i], elementsSelect[i].validationMessage);
             flag = true;
             return elementsSelect[i].querySelector('.bs-title-option').text;
@@ -210,6 +210,7 @@ function validationSelectChange(id) {
 }
 
 function eraseError(element){
+
     if(document.getElementById('errorMsg_'+element.id)){
         eleChild = document.getElementById('errorMsg_'+element.id)
         element.parentElement.classList.remove('error');

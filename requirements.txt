@@ -7,7 +7,7 @@ schedule
 requests
 openpyxl
 image
-psycopg2
+psycopg2-binary
 PyMySQL
 python-dateutil
 pyfcm

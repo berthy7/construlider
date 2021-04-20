@@ -1,100 +1,221 @@
 <div id="form" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document" >
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 id="user_title" class="modal-title">Ingreso Casa</h3>
-                <h4 id="user_enable" class=""></h4>
-            </div>
-
-            <div class="modal-body">
-                <div  id="user_form_body" class="box-body">
-                    <div id="id_div" class="form-group">
-                        <div class="form-line">
-                            {% module xsrf_form_html() %}
-                            <input id="id" type="text" class="form-control" disabled="disabled">
-                            <label for="id" class="form-label">Casa ID</label>
-                        </div>
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <label>Urbanizacion</label>
-                             <select id="fkurbanizacion" class="form-control">
-                                {% for urb in urbanizaciones %}
-                                    <option value="{{urb.id}}">{{urb.direccion}}</option>
-                                {% end %}
-                             </select>
-                        </div>
-                    </div>
-                    </br>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-6">
-                            <label>Manzanos</label>
-                             <select id="fkmanzano" name="Manzanos" class="form-control" required>
-
-                             </select>
-                        </div>
-                    </div>
-                    </br>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Ancho</label>
-                                <div class="form-line">
-                                    <input id="ancho" name="Ancho" type="number" class="form-control txta-own" required >
-                                </div>
-                        </div>
-
-                    </div>
-                    </br>
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Largo</label>
-                                <div class="form-line">
-                                    <input id="largo" name="Largo" type="number" class="form-control txta-own" required >
-                                </div>
-                        </div>
-
-                    </div>
-                    </br>
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Superficie</label>
-                                <div class="form-line">
-                                    <input id="superficie" name="Superficie" type="number" class="form-control txta-own" required>
-                                </div>
-                        </div>
-
-                    </div>
-                    </br>
-
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Superficie Construida</label>
-                                <div class="form-line">
-                                    <input id="superficieConstruida" name="Superficie Construida" type="number" class="form-control txta-own" required>
-                                </div>
-                        </div>
-
-                    </div>
-                    </br>
-
-
-
-                     <div class="modal-footer">
-                        {% if 'casa_insert' in privileges %}
-                            <button id="insert" type="button" class="btn color_boton waves-effect white-own" >Guardar <i class="material-icons white-own">save</i></button>
-                        {% end %}
-                        {% if 'casa_update' in privileges %}
-                            <button id="update" type="button" class="btn color_boton waves-effect white-own" >Modificar <i class="material-icons white-own">refresh</i></button>
-                        {% end %}
-                    </div>
+            <form id="form_submit" role="form" enctype="multipart/form-data" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 id="user_title" class="modal-title">Registrar Casa</h3>
+                    <h4 id="user_enable" class=""></h4>
                 </div>
 
-            </div>
+                <div class="modal-body">
+                    <div  id="user_form_body" class="box-body">
+                        <div id="id_div">
+                            <div class="row clearfix">
+                                <div class="col-sm-4">
+                                    <label class="form-label">Nro</label>
+                                    <div class="form-line">
+                                        {% module xsrf_form_html() %}
+                                        <input id="id" type="text" class="form-control" disabled="disabled">
 
+                                    </div>
+                                </div>
+                            </div>
+                            </br>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                <label>Urbanizacion</label>
+                                 <select id="fkurbanizacion" class="form-control">
+                                    {% for urb in urbanizaciones %}
+                                        <option value="{{urb.id}}">{{urb.nombre}}</option>
+                                    {% end %}
+                                 </select>
+                            </div>
+                        </div>
+                        </br>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-6">
+                                <label>Manzanos</label>
+                                 <select id="fkmanzano" name="Manzanos" class="form-control" required>
+                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <label>Norte</label>
+                                    <div class="form-line">
+                                        <input id="norte" name="Norte" type="number" class="form-control txta-own" required >
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <label>Sur</label>
+                                    <div class="form-line">
+                                        <input id="sur" name="Sur" type="number" class="form-control txta-own" required >
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <label>Este</label>
+                                    <div class="form-line">
+                                        <input id="este" name="Este" type="number" class="form-control txta-own" required >
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <label>Oeste</label>
+                                    <div class="form-line">
+                                        <input id="oeste" name="Oeste" type="number" class="form-control txta-own" required>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <label>Superficie</label>
+                                    <div class="form-line">
+                                        <input id="superficie" name="Superficie" type="number" class="form-control txta-own" required>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <label>Superficie Construida</label>
+                                    <div class="form-line">
+                                        <input id="superficieConstruida" name="Superficie Construida" type="number" class="form-control txta-own" required>
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <label>Valor metro cuadrado</label>
+                                    <div class="form-line">
+                                        <input id="valorMetroCuadrado" name="Valor metro cuadrado" type="number" class="form-control txta-own" required>
+                                    </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <label></label>
+                                <select id="fkmoneda" class="form-control">
+                                    {% for mone in monedas %}
+                                        <option value="{{mone.id}}">{{mone.nombre}}</option>
+                                    {% end %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="nfoto">
+                                    <label>Fotografia Actual 1</label>
+                                    <div id="imagen_archivo" class="row m-b-20">
+                                        <div class="text-center">
+                                            <img id='imagen_show_img' src='' width='250px'>
+                                            </br>
+                                            </br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <label class="form-label">Nueva Fotografia 1: </label>
+                                <input id="foto1" name="archivo" type="file" class="file form-control"
+                                            width='300px'/>
+                                </br>
+                                </br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="nfoto">
+                                    <label>Fotografia Actual 2</label>
+                                    <div id="imagen_archivo2" class="row m-b-20">
+                                        <div class="text-center">
+                                            <img id='imagen_show_img2' src='' width='250px'>
+                                            </br>
+                                            </br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <label class="form-label">Nueva Fotografia 2: </label>
+                                <input id="foto2" name="archivo2" type="file" class="file form-control"/>
+                                </br>
+                                </br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="nfoto">
+                                    <label>Fotografia Actual 3</label>
+                                    <div id="imagen_archivo3" class="row m-b-20">
+                                        <div class="text-center">
+                                            <img id='imagen_show_img3' src='' width='250px'>
+                                            </br>
+                                            </br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-5">
+                                <label class="form-label">Nueva Fotografia 3: </label>
+                                <input id="foto3" name="archivo3" type="file" class="file form-control"/>
+                                </br>
+                                </br>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="nfoto">
+                                    <label>Fotografia Actual 4</label>
+                                    <div id="imagen_archivo4" class="row m-b-20">
+                                        <div class="text-center">
+                                            <img id='imagen_show_img4' src='' width='250px'>
+                                            </br>
+                                            </br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <label class="form-label">Nueva Fotografia 4: </label>
+                                <input id="foto4" name="archivo4" type="file" class="file form-control"/>
+                                </br>
+                                </br>
+                            </div>
+                        </div>
+
+                         <div class="modal-footer">
+                            {% if 'casa_insert' in privileges %}
+                                <button id="insert" type="submit" class="btn bg-indigo waves-effect white-own">Guardar <i class="material-icons white-own">save</i></button>
+                            {% end %}
+                            {% if 'casa_update' in privileges %}
+                                <button id="update" type="submit" class="btn bg-indigo waves-effect white-own">Modificar <i class="material-icons white-own">refresh</i></button>
+                            {% end %}
+                        </div>
+                    </div>
+
+                </div>
+            </form>
 
         </div>
     </div>

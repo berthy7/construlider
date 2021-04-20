@@ -23,6 +23,16 @@ function cargar_tabla(data){
         deferRender:    true,
         scrollCollapse: true,
         scroller:       true,
+              columnDefs: [
+            {
+                targets: 5,
+                className: 'text-center'
+            },
+            {
+                targets: 6,
+                className: 'text-center'
+            }
+          ],
 
         dom: "Bfrtip" ,
         buttons: [
@@ -60,7 +70,7 @@ function append_input_terreno(id_in) {
     '<div class="row">\
         <div class="col-sm-1 hidden">\
             <div class="input-group">\
-            <input  id="id'+id_in+'" clrass="form-control  idterreno reserva readonly txta-own">\
+            <input  id="id'+id_in+'" class="form-control  idterreno reserva readonly txta-own">\
             </div>\
         </div>\
         <div class="col-sm-3">\
@@ -221,7 +231,7 @@ function editar(elemento){
             clean_form()
             verif_inputs('')
             validationInputSelects("form")
-            $('#id_div').hide()
+            $('#id_div').show()
             $('#insert').hide()
             $('#update').show()
             $('#form').modal('show')
@@ -272,7 +282,7 @@ function eliminar(elemento){
         title: cb_title,
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#393939",
+        confirmButtonColor: "#424A5A",
         cancelButtonColor: "#F44336",
         confirmButtonText: "Aceptar",
         cancelButtonText: "Cancelar"

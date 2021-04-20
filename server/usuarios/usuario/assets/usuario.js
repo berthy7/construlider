@@ -239,20 +239,18 @@ $('#insert').click(function () {
 
         objeto = JSON.stringify({
          'nombre': $('#nombre_usuario').val(),
-        'apellidop': $('#apellidop').val(),
-        'apellidom': $('#apellidom').val(),
+        'apellidos': $('#apellidos').val(),
+        'carnet': $('#carnet').val(),
+        'correo': $('#correo').val(),
         'telefono': $('#telefono').val(),
         'username': $('#username').val(),
-        'password': $('#password').val(),
-        'fkrol': parseInt($('#fkrol').val()),
-        'ci': $('#ci').val(),
-        'correo': $('#correo').val(),
-        'expendido': $('#expendido').val()
+        'password': $('#password').val(), 
+        'fkrol': parseInt($('#fkrol').val())
 
         })
 
         objeto_verificar = JSON.stringify({
-            'username': $('#correo').val(),
+            'username': $('#username').val(),
         })
         
         ajax_call_post("usuario_verificar_username", {
@@ -260,48 +258,26 @@ $('#insert').click(function () {
             object: objeto_verificar
         }, function (response) {
             if(response.success === true){
-                ajax_call_asincrono('usuario_insert', {
+                
+                ajax_call('usuario_insert', {
                     _xsrf: getCookie("_xsrf"),
                     object: objeto
                 }, null, function (response) {
                     response = JSON.parse(response);
                     if(response.success === true){
-        
-                        var data = [];
-                        var id
-                        var estado
-                        for (var i = 0; i < Object.keys(response.response).length; i++) {
-                            id = response['response'][i]['id']
-                            estado = response['response'][i]['enabled']
-                            if(estado == true){
-                                estado = "<input id='" + id + "' onClick='event.preventDefault();eliminar(this)' data-id='" + id + "' type='checkbox' class='chk-col-indigo 'checked disabled/><label for='" + id + "'></label>" +" "+ "Habilitado"
-
-                            }else{
-                                estado = "<input id='" + id + "' onClick='event.preventDefault();eliminar(this)'data-id='" + id + "' type='checkbox' class='chk-col-indigo ' disabled/><label for='" + id + "'></label>" + " " + "Deshabilitado"
-
-                            }
-                            data.push( [
-                                response['response'][i]['fullname'],
-                                response['response'][i]['username'],
-                                response['response'][i]['rol']['nombre'],
-                                estado,
-                                "<button id='edit' onClick='editar(this)' data-json='" + id + "' type='button' class='btn bg-indigo waves-effect waves-light edit' title='Editar'><i class='material-icons'>create</i></button>"
-                            ]);
-                        }
-        
-                        cargar_tabla(data)
+                        setTimeout(function(){window.location=main_route}, 2000);
                     }else{
-        
+
                         swal(
                             'Datos duplicados',
                             response.message,
                             'error'
                         )
                     }
-        
+
                 })
-                showMessage("Insertado Correctamente", "success", "ok")
                 $('#form').modal('hide')
+
 
             }else{
                 swal(
@@ -332,13 +308,11 @@ function editar(elemento){
 
         $('#id').val(self.id),
         $('#nombre_usuario').val(self.nombre),
-        $('#apellidop').val(self.apellidop),
-        $('#apellidom').val(self.apellidom),
+        $('#apellidos').val(self.apellidos),
         $('#telefono').val(self.telefono),
-        $('#ci').val(self.ci)
+        $('#carnet').val(self.carnet)
         $('#correo').val(self.correo)
-        $('#expendido').val(self.expendido)
-        $('#expendido').selectpicker('refresh')
+        $('#telefono').val(self.telefono)
 
         $('#username').val(self.username)
         $('#password').val('')
@@ -361,14 +335,12 @@ $('#update').click(function () {
     objeto = JSON.stringify({
         'id': parseInt($('#id').val()),
         'nombre': $('#nombre_usuario').val(),
-        'apellidop': $('#apellidop').val(),
-        'apellidom': $('#apellidom').val(),
+        'apellidos': $('#apellidos').val(),
+        'carnet': $('#carnet').val(),
+        'correo': $('#correo').val(),
         'telefono': $('#telefono').val(),
         'username': $('#username').val(),
-        'password': $('#password').val(),
-         'ci': $('#ci').val(),
-         'correo': $('#correo').val(),
-         'expendido': $('#expendido').val(),
+        'password': $('#password').val(), 
         'fkrol': parseInt($('#fkrol').val())
     })
 
@@ -383,47 +355,24 @@ $('#update').click(function () {
     }, function (response) {
         if(response.success === true){
 
-        ajax_call('usuario_update', {
-            _xsrf: getCookie("_xsrf"),
-            object: objeto
-        }, null, function (response) {
-            response = JSON.parse(response);
-            if(response.success === true){
-                var data = [];
-                var id
-                var estado
-                for (var i = 0; i < Object.keys(response.response).length; i++) {
-                    id = response['response'][i]['id']
-                    estado = response['response'][i]['enabled']
-                    if(estado == true){
-                        estado = "<input id='" + id + "' onClick='event.preventDefault();eliminar(this)' data-id='" + id + "' type='checkbox' class='chk-col-indigo 'checked disabled/><label for='" + id + "'></label>" +" "+ "Habilitado"
+            ajax_call('usuario_update', {
+                _xsrf: getCookie("_xsrf"),
+                object: objeto
+            }, null, function (response) {
+                response = JSON.parse(response);
+                if(response.success === true){
+                    setTimeout(function(){window.location=main_route}, 2000);
+                }else{
 
-                    }else{
-                        estado = "<input id='" + id + "' onClick='event.preventDefault();eliminar(this)'data-id='" + id + "' type='checkbox' class='chk-col-indigo ' disabled/><label for='" + id + "'></label>" + " " + "Deshabilitado"
-
-                    }
-                    data.push( [
-                        response['response'][i]['fullname'],
-                        response['response'][i]['username'],
-                        response['response'][i]['rol']['nombre'],
-                        estado,
-                        "<button id='edit' onClick='editar(this)' data-json='" + id + "' type='button' class='btn bg-indigo waves-effect waves-light edit' title='Editar'><i class='material-icons'>create</i></button>"
-                    ]);
+                    swal(
+                        'Datos duplicados',
+                        response.message,
+                        'error'
+                    )
                 }
 
-                cargar_tabla(data)
-            }else{
-
-                swal(
-                    'Datos duplicados',
-                    response.message,
-                    'error'
-                )
-            }
-
-        })
-        showMessage("Modificado Correctamente", "success", "ok")
-        $('#form').modal('hide')
+            })
+            $('#form').modal('hide')
 
         }else{
             swal(
@@ -454,7 +403,7 @@ function eliminar(elemento){
         title: cb_title,
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#393939",
+        confirmButtonColor: "#424A5A",
         cancelButtonColor: "#F44336",
         confirmButtonText: "Aceptar",
         cancelButtonText: "Cancelar"

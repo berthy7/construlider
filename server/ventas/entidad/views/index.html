@@ -56,7 +56,7 @@
                 data.push( [
                     '{{ c.id }}',
                     '{{ c.nombre }}',
-                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
+                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>',
                     '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
 
                 ]);

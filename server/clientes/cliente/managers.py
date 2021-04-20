@@ -10,11 +10,12 @@ class ClienteManager(SuperManager):
         super().__init__(Cliente, db)
 
     def listar_todo(self):
-        return self.db.query(self.entity).filter(self.entity.estado == True).order_by(self.entity.nombre.asc()).all()
+        print('listar_todo')
+        return self.db.query(self.entity).filter(self.entity.enabled == True).order_by(self.entity.nombre.asc()).all()
 
 
-    def insert(self, diccionary):
-        objeto = ClienteManager(self.db).entity(**diccionary)
+    def insert(self, dictionary):
+        objeto = ClienteManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().insert(objeto)
@@ -25,8 +26,8 @@ class ClienteManager(SuperManager):
 
         return a
 
-    def update(self, diccionary):
-        objeto = ClienteManager(self.db).entity(**diccionary)
+    def update(self, dictionary):
+        objeto = ClienteManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().update(objeto)
@@ -47,7 +48,7 @@ class ClienteManager(SuperManager):
             mensaje = "Se deshabilitó Cliente."
 
         fecha = BitacoraManager(self.db).fecha_actual()
-        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha)
+        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha,tabla="cliente", identificador=id)
         super().insert(b)
         self.db.merge(x)
         self.db.commit()

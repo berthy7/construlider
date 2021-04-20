@@ -1,8 +1,15 @@
 import hashlib
 from server.database.connection import transaction
+from server.ventas.reserva.models import *
+from server.ventas.contrato.models import *
+from server.ventas.entidad.models import *
+from server.ventas.credito.models import *
+from server.ventas.cuota.managers import *
 from ..usuarios.rol.models import *
 from server.terrenos.terreno.models import *
 
+import schedule
+import pytz
 
 def insertions():
     with transaction() as session:
@@ -14,9 +21,14 @@ def insertions():
         if reserva_m is None:
             reserva_m = Modulo(title='Reservas', route='/reserva', name='reserva', icon='done')
 
+
         contrato_m = session.query(Modulo).filter(Modulo.name == 'contrato').first()
         if contrato_m is None:
             contrato_m = Modulo(title='Ventas', route='/contrato', name='contrato', icon='done_all')
+
+        devolucion_m = session.query(Modulo).filter(Modulo.name == 'devolucion').first()
+        if devolucion_m is None:
+            devolucion_m = Modulo(title='Devoluciones', route='/devolucion', name='devolucion', icon='close')
 
         credito_m = session.query(Modulo).filter(Modulo.name == 'credito').first()
         if credito_m is None:
@@ -28,6 +40,7 @@ def insertions():
 
         ventas_m.children.append(reserva_m)
         ventas_m.children.append(contrato_m)
+        ventas_m.children.append(devolucion_m)
         ventas_m.children.append(credito_m)
         ventas_m.children.append(entidad_m)
 
@@ -127,6 +140,30 @@ def insertions():
         entidad_m.children.append(update_entidad)
         entidad_m.children.append(delete_entidad)
 
+        query_devolucion = session.query(Modulo).filter(Modulo.name == 'devolucion_query').first()
+        if query_devolucion is None:
+            query_devolucion = Modulo(title='Consultar', route='', name='devolucion_query', menu=False)
+
+        insert_devolucion = session.query(Modulo).filter(Modulo.name == 'devolucion_insert').first()
+        if insert_devolucion is None:
+            insert_devolucion = Modulo(title='Adicionar', route='/devolucion_insert', name='devolucion_insert',
+                                         menu=False)
+
+        update_devolucion = session.query(Modulo).filter(Modulo.name == 'devolucion_update').first()
+        if update_devolucion is None:
+            update_devolucion = Modulo(title='Actualizar', route='/devolucion_update', name='devolucion_update',
+                                         menu=False)
+
+        delete_devolucion = session.query(Modulo).filter(Modulo.name == 'devolucion_delete').first()
+        if delete_devolucion is None:
+            delete_devolucion = Modulo(title='Dar de Baja', route='/devolucion_delete', name='devolucion_delete',
+                                         menu=False)
+
+        devolucion_m.children.append(query_devolucion)
+        devolucion_m.children.append(insert_devolucion)
+        devolucion_m.children.append(update_devolucion)
+        devolucion_m.children.append(delete_devolucion)
+
 
         admin_role = session.query(Rol).filter(Rol.nombre == 'ADMINISTRADOR').first()
         registrador_role = session.query(Rol).filter(Rol.nombre == 'REGISTRADOR').first()
@@ -135,6 +172,7 @@ def insertions():
         admin_role.modulos.append(ventas_m)
         admin_role.modulos.append(reserva_m)
         admin_role.modulos.append(contrato_m)
+        admin_role.modulos.append(devolucion_m)
         admin_role.modulos.append(credito_m)
         admin_role.modulos.append(entidad_m)
 
@@ -149,6 +187,11 @@ def insertions():
         admin_role.modulos.append(update_contrato)
         admin_role.modulos.append(delete_contrato)
 
+        admin_role.modulos.append(query_devolucion)
+        admin_role.modulos.append(insert_devolucion)
+        admin_role.modulos.append(update_devolucion)
+        admin_role.modulos.append(delete_devolucion)
+
         admin_role.modulos.append(query_credito)
         admin_role.modulos.append(insert_credito)
         admin_role.modulos.append(update_credito)
@@ -158,7 +201,6 @@ def insertions():
         admin_role.modulos.append(insert_entidad)
         admin_role.modulos.append(update_entidad)
         admin_role.modulos.append(delete_entidad)
-
 
         registrador_role.modulos.append(ventas_m)
         registrador_role.modulos.append(reserva_m)
@@ -176,6 +218,11 @@ def insertions():
         registrador_role.modulos.append(update_contrato)
         registrador_role.modulos.append(delete_contrato)
 
+        registrador_role.modulos.append(query_devolucion)
+        registrador_role.modulos.append(insert_devolucion)
+        registrador_role.modulos.append(update_devolucion)
+        registrador_role.modulos.append(delete_devolucion)
+
         registrador_role.modulos.append(query_credito)
         registrador_role.modulos.append(insert_credito)
         registrador_role.modulos.append(update_credito)
@@ -186,5 +233,33 @@ def insertions():
         registrador_role.modulos.append(update_entidad)
         registrador_role.modulos.append(delete_entidad)
 
+        session.add(Estadoreserva(nombre='Iniciado'))
+        session.add(Estadoreserva(nombre='Venta'))
+        session.add(Estadoreserva(nombre='Pagado'))
+        session.add(Estadoreserva(nombre='Cancelado'))
+
+        session.add(Entidad(nombre='Construlider'))
+
+        session.add(Tipoventa(nombre='Contado'))
+        session.add(Tipoventa(nombre='Credito'))
+
+        session.add(Estadocredito(nombre='En curso'))
+        session.add(Estadocredito(nombre='Revertido'))
+        session.add(Estadocredito(nombre='Concluido'))
+
+        session.add(Estadocuota(nombre='Pendiente'))
+        session.add(Estadocuota(nombre='Pagada'))
+        session.add(Estadocuota(nombre='Mora'))
+
 
         session.commit()
+
+def ventas_schedule():
+
+    def actualizar_cuota():
+        print("actualizar cuota")
+
+        with transaction() as db:
+            CuotaManager(db).actualizar_cuotas()
+
+    schedule.every().day.at("00:01").do(actualizar_cuota)

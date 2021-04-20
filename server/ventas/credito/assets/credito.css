@@ -1,3 +1,19 @@
 .color_boton{
     background-color: #424A5A !important;
 }
+
+
+.color_cuota_pagada{
+    background-color: #19a335 !important;
+}
+
+.color_cuota_mora{
+    background-color: #ed583e !important;
+}
+
+.clearfix {
+    margin-bottom: 5px;
+}
+
+
+

@@ -16,24 +16,24 @@ class UrbanizacionManager(SuperManager):
         return self.db.query(self.entity).filter(self.entity.enabled == True).order_by(self.entity.direccion.asc()).all()
 
 
-    def insert(self, diccionary):
-        objeto = UrbanizacionManager(self.db).entity(**diccionary)
+    def insert(self, dictionary):
+        objeto = UrbanizacionManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().insert(objeto)
-        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Registro Urbanizacion.", fecha=fecha, tabla="contrato",
+        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Registro Urbanizacion.", fecha=fecha, tabla="urbanizacion",
                      identificador=a.id)
         super().insert(b)
 
 
         return a
 
-    def update(self, diccionary):
-        objeto = UrbanizacionManager(self.db).entity(**diccionary)
+    def update(self, dictionary):
+        objeto = UrbanizacionManager(self.db).entity(**dictionary)
         fecha = BitacoraManager(self.db).fecha_actual()
 
         a = super().update(objeto)
-        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Modifico Urbanizacion.", fecha=fecha,tabla="contrato", identificador=a.id)
+        b = Bitacora(fkusuario=objeto.user, ip=objeto.ip, accion="Modifico Urbanizacion.", fecha=fecha,tabla="urbanizacion", identificador=a.id)
         super().insert(b)
 
         return a
@@ -49,7 +49,7 @@ class UrbanizacionManager(SuperManager):
             mensaje = "Se deshabilitó Urbanizacion."
 
         fecha = BitacoraManager(self.db).fecha_actual()
-        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha)
+        b = Bitacora(fkusuario=Usuario, ip=ip, accion=mensaje, fecha=fecha,tabla="urbanizacion", identificador=id)
         super().insert(b)
         self.db.merge(x)
         self.db.commit()

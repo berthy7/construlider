@@ -3,20 +3,46 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 id="user_title" class="modal-title">Ingreso Reserva</h3>
+                <h3 id="user_title" class="modal-title">Registrar Reserva</h3>
                 <h4 id="user_enable" class=""></h4>
             </div>
 
             <div class="modal-body">
                 <div  id="user_form_body" class="box-body">
-                    <div id="id_div" class="form-group">
-                        <div class="form-line">
-                            {% module xsrf_form_html() %}
-                            <input id="id" type="text" class="form-control" disabled="disabled">
-                            <label for="id" class="form-label">Reserva ID</label>
+                    <div id="id_div">
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <label class="form-label">Nro</label>
+                                <div class="form-line">
+                                    {% module xsrf_form_html() %}
+                                    <input id="id" type="text" class="form-control" disabled="disabled">
+
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <label>Clientes</label>
+                             <select id="fkcliente" class="form-control"required>
+                                {% for cli in clientes %}
+                                    <option value="{{cli.id}}">{{cli.nombre}} {{cli.apellidos}}</option>
+                                {% end %}
+                             </select>
                         </div>
                     </div>
-
+                    </br>
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <label>Urbanizacion</label>
+                             <select id="fkurbanizacion" class="form-control" required>
+                                {% for urb in urbanizaciones %}
+                                    <option value="{{urb.id}}">{{urb.nombre}}</option>
+                                {% end %}
+                             </select>
+                        </div>
+                    </div>
                     </br>
 
                     <div class="row clearfix">
@@ -30,10 +56,34 @@
                     </br>
 
                     <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <label>Tipo de Terreno</label>
+                             <select id="fktipoTerreno" class="form-control">
+                                {% for tipoterr in tipoterrenos %}
+                                    <option value="{{tipoterr.id}}">{{tipoterr.nombre}}</option>
+                                {% end %}
+                             </select>
+                        </div>
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-6">
+                            <label>Nro:</label>
+                             <select id="fkterreno" class="form-control" required>
+                                {% for terr in terrenos %}
+                                    <option value="{{terr.id}}">{{terr.id}}</option>
+                                {% end %}
+                             </select>
+                        </div>
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
                         <div class="col-sm-5">
-                            <label>Ancho</label>
+                            <label>Fecha</label>
                                 <div class="form-line">
-                                    <input id="ancho" name="Ancho" type="number" class="form-control txta-own" required >
+                                    <input id="fechaReserva" name="Fecha" type="text" class="form-control txta-own date" required >
                                 </div>
                         </div>
 
@@ -41,24 +91,23 @@
                     </br>
                     <div class="row clearfix">
                         <div class="col-sm-5">
-                            <label>Largo</label>
+                            <label>Monto</label>
                                 <div class="form-line">
-                                    <input id="largo" name="Largo" type="number" class="form-control txta-own" required >
+                                    <input id="monto" name="Monto" type="number" class="form-control txta-own" required >
                                 </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label></label>
+                             <select id="fkmoneda" class="form-control">
+                                {% for mone in monedas %}
+                                    <option value="{{mone.id}}">{{mone.nombre}}</option>
+                                {% end %}
+                             </select>
                         </div>
 
                     </div>
                     </br>
-                    <div class="row clearfix">
-                        <div class="col-sm-5">
-                            <label>Superficie</label>
-                                <div class="form-line">
-                                    <input id="superficie" name="Superficie" type="number" class="form-control txta-own" required>
-                                </div>
-                        </div>
 
-                    </div>
-                    </br>
 
                      <div class="modal-footer">
                         {% if 'reserva_insert' in privileges %}

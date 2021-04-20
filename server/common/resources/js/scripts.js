@@ -1,35 +1,39 @@
 ﻿function showMessage(mensaje,tipo,icono){
-    $.notify({
-        //icon: 'glyphicon glyphicon-' + icono,
-        icon: 'glyphicon glyphicon-ok',
-        message: mensaje
-    },{
-        //element: 'body',
-        //position: "fixed",
-        type: tipo,
-        allow_dismiss: false,
-        //newest_on_top: false,
-        //showProgressbar: false,
-        placement: {
-            from: "bottom",
-            align: "center"
-        },
-        //offset: 20,
-        //spacing: 10,
-        //z_index: 1031,
-        delay: 1000,
-        timer: 1000,
-        mouse_over: null,
-        animate: {
-            enter: 'animated fadeInDown',
-            exit: 'animated fadeOutUp'
-        },
-        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
-                    '<span data-notify="message">{2}</span>' +
-                    //'<span class="glyphicon glyphicon-"'+icon+'"></span>' +
-                    '<span class="glyphicon glyphicon-'+icono+'"></span>' +
-                '</div>'
-    });
+
+    if(mensaje != ""){
+
+        $.notify({
+            //icon: 'glyphicon glyphicon-' + icono,
+            icon: 'glyphicon glyphicon-ok',
+            message: mensaje
+        },{
+            //element: 'body',
+            //position: "fixed",
+            type: tipo,
+            allow_dismiss: false,
+            //newest_on_top: false,
+            //showProgressbar: false,
+            placement: {
+                from: "bottom",
+                align: "center"
+            },
+            //offset: 20,
+            //spacing: 10,
+            //z_index: 1031,
+            delay: 1000,
+            timer: 1000,
+            mouse_over: null,
+            animate: {
+                enter: 'animated fadeInDown',
+                exit: 'animated fadeOutUp'
+            },
+            template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">' +
+                        '<span data-notify="message">{2}</span>' +
+                        //'<span class="glyphicon glyphicon-"'+icon+'"></span>' +
+                        '<span class="glyphicon glyphicon-'+icono+'"></span>' +
+                    '</div>'
+        });
+    }
  }
 
 

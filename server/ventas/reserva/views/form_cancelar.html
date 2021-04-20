@@ -1,0 +1,140 @@
+<div id="form_cancelar" class="modal fade" tabindex="-1" role="dialog"  data-backdrop="static" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 id="user_title" class="modal-title">Cancelar Reserva</h3>
+                <h4 id="user_enable" class=""></h4>
+            </div>
+
+            <div class="modal-body">
+                <div  id="user_form_body" class="box-body">
+                    <div id="id_div_cancelar" class="form-group">
+                        <div class="form-line">
+                            {% module xsrf_form_html() %}
+                            <input id="id_cancelar" type="text" class="form-control" disabled="disabled">
+                            <label  class="form-label">Reserva ID</label>
+                        </div>
+                    </div>
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Fecha reserva: </label>
+
+                        </div>
+                        <div class="col-sm-6">
+                           <label id="label_fecha_reserva" >Fecha</label>
+
+                        </div>
+
+                    </div>
+                    </br>
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Cliente: </label>
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="label_cliente" > nombre cliente</label>
+                        </div>
+                    </div>
+                    </br>
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Urbanizacion: </label>
+
+                        </div>
+                        <div class="col-sm-6">
+                           <label id="label_urbanizacion" > nombre Urbanizacion</label>
+
+                        </div>
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Manzanos: </label>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="label_manzano" > nombre Manzanos</label>
+
+                        </div>
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Tipo: </label>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="label_tipo_terreno" > nombre Tipo </label>
+
+                        </div>
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Terreno: </label>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="label_codigo_terreno" > codigo Terreno</label>
+
+                        </div>
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Monto: </label>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="label_monto" >Monto</label>
+
+                        </div>
+
+                    </div>
+                    </br>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-2">
+                            <label>Estado: </label>
+
+                        </div>
+                        <div class="col-sm-6">
+                            <label id="label_estado_reserva" >Estado Reserva</label>
+
+                        </div>
+                    </div>
+                    </br>
+                    <div class="row clearfix">
+
+                        <div id="reportes" class="col-sm-5" hidden>
+                            <label class="form-label">Reporte Devolucion</label>
+                            <div  class="box-body">
+
+                                <button id="reporte-pdf" title="PDF" type="button" class="btn bg-red waves-effect">
+                                    <i class="material-icons">picture_as_pdf</i>
+                                </button>
+
+                             </div>
+                        </div>
+                    </div>
+
+                     <div class="modal-footer">
+                        {% if 'reserva_insert' in privileges %}
+                            <button id="boton_cancel" type="button" class="btn color_boton waves-effect white-own" >Cancelar <i class="material-icons white-own">cancel</i></button>
+                        {% end %}
+                         <button id="boton_cerrar" type="button" class="btn color_boton waves-effect white-own" >Cerrar<i class="material-icons white-own">close</i></button>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

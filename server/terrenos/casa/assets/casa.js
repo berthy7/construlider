@@ -26,6 +26,17 @@ function cargar_tabla(data){
         scrollCollapse: true,
         scroller:       true,
 
+          columnDefs: [
+            {
+                targets: 10,
+                className: 'text-center'
+            },
+            {
+                targets: 11,
+                className: 'text-center'
+            }
+          ],
+
         dom: "Bfrtip" ,
         buttons: [
             // {  extend : 'excelHtml5',
@@ -48,7 +59,7 @@ function cargar_tabla(data){
 
 
         },
-        "order": [[ 0, "asc" ]],
+        "order": [[ 0, "desc" ]],
         language : {
             'url': '/resources/js/spanish.json',
         },
@@ -73,9 +84,9 @@ $('#fkmanzano').selectpicker({
 $('#fkurbanizacion').change(function () {
 
     cargar_manzanos($('#fkurbanizacion').val())
+    validationInputSelectsWithReturn("form")
 
 });
-
 
 function cargar_manzanos(idurbanizacion) {
         obj = JSON.stringify({
@@ -95,11 +106,20 @@ function cargar_manzanos(idurbanizacion) {
     }).done(function (response) {
         response = JSON.parse(response)
 
+
+
         $('#fkmanzano').html('');
         var select = document.getElementById("fkmanzano")
         for (var i = 0; i < Object.keys(response.response).length; i++) {
+
+            if (i == 0){
+                $('#valorMetroCuadrado').val(response['response'][i]['urbanizacion']['valorMetroCuadrado'])
+                $('#fkmoneda').val(response['response'][i]['urbanizacion']['fkmoneda'])
+                $('#fkmoneda').selectpicker('refresh')
+            }
+
             var option = document.createElement("OPTION");
-            option.innerHTML = response['response'][i]['numero'] +" - "+response['response'][i]['calle1'];
+            option.innerHTML = "Nro. " + response['response'][i]['numero'] + ": " + response['response'][i]['calle1'] + " - " + response['response'][i]['calle2'];
             option.value = response['response'][i]['id'];
             select.appendChild(option);
         }
@@ -111,14 +131,25 @@ function cargar_manzanos(idurbanizacion) {
 
 
 $('#new').click(function () {
-    $('#ancho').val('')
-    $('#largo').val('')
+    $('#norte').val('')
+    $('#sur').val('')
+    $('#este').val('')
+    $('#oeste').val('')
     $('#superficie').val('')
     $('#superficieConstruida').val('')
+    $('#valorMetroCuadrado').val('')
     $('#fkurbanizacion').val('')
     $('#fkurbanizacion').selectpicker('refresh')
     $('#fkmanzano').val('')
     $('#fkmanzano').selectpicker('refresh')
+    $('#fkmoneda').val('')
+    $('#fkmoneda').selectpicker('refresh')
+
+    $('#foto1').fileinput('clear');
+    $('#foto2').fileinput('clear');
+    $('#foto3').fileinput('clear');
+    $('#foto4').fileinput('clear');
+    $('.nfoto').hide()
 
 
     verif_inputs('')
@@ -131,33 +162,85 @@ $('#new').click(function () {
 })
 
 
-$('#insert').click(function () {
-    notvalid = validationInputSelectsWithReturn("form");
-    if (notvalid===false) {
-        objeto = JSON.stringify({
-            'ancho': $('#ancho').val(),
-            'largo': $('#largo').val(),
-            'superficie': $('#superficie').val(),
-            'superficieConstruida': $('#superficieConstruida').val(),
-            'fkmanzano': $('#fkmanzano').val()
-         
-        })
-        ajax_call('casa_insert', {
-            object: objeto,
-            _xsrf: getCookie("_xsrf")
-        }, null, function () {
-            setTimeout(function () {
-                window.location = main_route
-            }, 2000);
-        })
-        $('#form').modal('hide')
-    } else {
-        swal(
-            'Error de datos.',
-             notvalid,
-            'error'
-        )
-    }
+$('#insert').on('click',function (e) {
+    e.preventDefault();
+    objeto_verificar = JSON.stringify({
+        'idurbanizacion': $('#fkurbanizacion').val(),
+    })
+    ajax_call_post("casa_verificar", {
+        _xsrf: getCookie("_xsrf"),
+        object: objeto_verificar
+    }, function (response) {
+         if(response.success === true){
+
+             notvalid = validationInputSelectsWithReturn("form");
+            if (notvalid===false) {
+                var data = new FormData($('#form_submit')[0]);
+
+                objeto = JSON.stringify({
+                    'norte': $('#norte').val(),
+                    'sur': $('#sur').val(),
+                    'este': $('#este').val(),
+                    'oeste': $('#oeste').val(),
+                    'superficie': $('#superficie').val(),
+                    'superficieConstruida': $('#superficieConstruida').val(),
+                    'valorMetroCuadrado': $('#valorMetroCuadrado').val(),
+                    'fkmoneda': $('#fkmoneda').val(),
+                    'fkmanzano': $('#fkmanzano').val()
+
+                })
+
+                data.append('object', objeto)
+                data.append('_xsrf', getCookie("_xsrf"))
+
+                render = null
+                callback = function () {
+                    setTimeout(function () {
+                        window.location = main_route
+                    }, 2000);
+                }
+
+                $.ajax({
+                    url: 'casa_insert',
+                    type: "post",
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    async: false
+                }).done(function (response) {
+                    if (render != null) {
+                        $(render).html(response)
+                    } else {
+                        dictionary = JSON.parse(response)
+                        if ("message" in dictionary && dictionary.message !== '') {
+                            if (dictionary.success) showMessage(dictionary.message, "success", "ok")
+                            else showMessage(dictionary.message, "danger", "remove")
+                        }
+                    }
+                    if (callback != null)  callback(response)
+                })
+                $('#form').modal('hide')
+
+
+            } else {
+                swal(
+                    'Error de datos.',
+                     notvalid,
+                    'warning'
+                )
+            }
+
+         }else{
+             swal(
+                'Error de datos.',
+                 'ya se alcanzo el nro maximo de Casas ',
+                'warning'
+            )
+
+         }
+
+    })
 })
 
 
@@ -171,10 +254,15 @@ function editar(elemento){
     }, function (response) {
         var self = response;
             $('#id').val(self.id)
-            $('#ancho').val(self.ancho)
-            $('#largo').val(self.largo)
+            $('#norte').val(self.norte)
+            $('#sur').val(self.sur)
+            $('#este').val(self.este)
+            $('#oeste').val(self.oeste)
             $('#superficie').val(self.superficie)
             $('#superficieConstruida').val(self.superficieConstruida)
+            $('#valorMetroCuadrado').val(self.valorMetroCuadrado)    
+            $('#fkmoneda').val(self.fkmoneda)
+            $('#fkmoneda').selectpicker('refresh')
             $('#fkurbanizacion').val(self.manzano.fkurbanizacion)
             $('#fkurbanizacion').selectpicker('refresh')
 
@@ -182,46 +270,124 @@ function editar(elemento){
 
             $('#fkmanzano').val(self.fkmanzano)
             $('#fkmanzano').selectpicker('refresh')
+        
+            if (self.foto1 != "None" && self.foto1 != "") {
+                document.getElementById("imagen_show_img").src = self.foto1;
+            } else {
+                document.getElementById("imagen_show_img").src = "/resources/images/sinImagen.jpg";
+            }
+            if (self.foto2 != "None" && self.foto2 != "") {
+                document.getElementById("imagen_show_img2").src = self.foto2;
+            } else {
+                document.getElementById("imagen_show_img2").src = "/resources/images/sinImagen.jpg";
+            }
+            if (self.foto3 != "None" && self.foto3 != "") {
+                document.getElementById("imagen_show_img3").src = self.foto3;
+            } else {
+                document.getElementById("imagen_show_img3").src = "/resources/images/sinImagen.jpg";
+            }
+            if (self.foto4 != "None" && self.foto4 != "") {
+                document.getElementById("imagen_show_img4").src = self.foto4;
+            } else {
+                document.getElementById("imagen_show_img4").src = "/resources/images/sinImagen.jpg";
+            }
 
-
+            $('#foto1').fileinput('clear');
+            $('#foto2').fileinput('clear');
+            $('#foto3').fileinput('clear');
+            $('#foto4').fileinput('clear');
+            $('.nfoto').show()
+        
             clean_form()
             verif_inputs('')
             validationInputSelects("form")
-            $('#id_div').hide()
+            $('#id_div').show()
             $('#insert').hide()
             $('#update').show()
             $('#form').modal('show')
     })
     }
 
-$('#update').click(function () {
-    notvalid = validationInputSelectsWithReturn("form");
-    if (notvalid===false) {
-        objeto = JSON.stringify({
-            'id': parseInt($('#id').val()),
-            'ancho': $('#ancho').val(),
-            'largo': $('#largo').val(),
-            'superficie': $('#superficie').val(),
-            'superficieConstruida': $('#superficieConstruida').val(),
-            'fkmanzano': $('#fkmanzano').val()
-            
-        })
-        ajax_call('casa_update', {
-            object: objeto,
-            _xsrf: getCookie("_xsrf")
-        }, null, function () {
-            setTimeout(function () {
-                window.location = main_route
-            }, 2000);
-        })
-        $('#form').modal('hide')
-    } else {
-        swal(
-            'Error de datos.',
-             notvalid,
-            'error'
-        )
-    }
+$('#update').on('click',function (e) {
+    e.preventDefault();
+    objeto_verificar = JSON.stringify({
+        'idurbanizacion': $('#fkurbanizacion').val(),
+    })
+    ajax_call_post("casa_verificar", {
+        _xsrf: getCookie("_xsrf"),
+        object: objeto_verificar
+    }, function (response) {
+         if(response.success === true){
+
+             notvalid = validationInputSelectsWithReturn("form");
+            if (notvalid===false) {
+                var data = new FormData($('#form_submit')[0]);
+
+                objeto = JSON.stringify({
+                    'id': $('#id').val(),
+                    'norte': $('#norte').val(),
+                    'sur': $('#sur').val(),
+                    'este': $('#este').val(),
+                    'oeste': $('#oeste').val(),
+                    'superficie': $('#superficie').val(),
+                    'superficieConstruida': $('#superficieConstruida').val(),
+                    'valorMetroCuadrado': $('#valorMetroCuadrado').val(),
+                    'fkmoneda': $('#fkmoneda').val(),
+                    'fkmanzano': $('#fkmanzano').val()
+
+                })
+
+                data.append('object', objeto)
+                data.append('_xsrf', getCookie("_xsrf"))
+
+                render = null
+                callback = function () {
+                    setTimeout(function () {
+                        window.location = main_route
+                    }, 2000);
+                }
+
+                $.ajax({
+                    url: 'casa_update',
+                    type: "post",
+                    data: data,
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    async: false
+                }).done(function (response) {
+                    if (render != null) {
+                        $(render).html(response)
+                    } else {
+                        dictionary = JSON.parse(response)
+                        if ("message" in dictionary && dictionary.message !== '') {
+                            if (dictionary.success) showMessage(dictionary.message, "success", "ok")
+                            else showMessage(dictionary.message, "danger", "remove")
+                        }
+                    }
+                    if (callback != null)  callback(response)
+                })
+                $('#form').modal('hide')
+
+
+            } else {
+                swal(
+                    'Error de datos.',
+                     notvalid,
+                    'warning'
+                )
+            }
+
+         }else{
+             swal(
+                'Error de datos.',
+                 'ya se alcanzo el nro maximo de terrenos ',
+                'error'
+            )
+
+         }
+
+    })
 })
 reload_form()
 

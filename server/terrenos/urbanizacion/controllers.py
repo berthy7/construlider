@@ -1,5 +1,6 @@
 from .managers import *
 from server.common.controllers import CrudController
+from server.parametros.moneda.managers import *
 
 import json
 
@@ -16,30 +17,37 @@ class UrbanizacionController(CrudController):
         '/urbanizacion_delete': {'POST': 'delete'}
     }
 
+    def get_extra_data(self):
+        aux = super().get_extra_data()
+
+        aux['monedas'] = MonedaManager(self.db).listar_todo()
+
+        return aux
+
 
     def insert(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        UrbanizacionManager(self.db).insert(diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        UrbanizacionManager(self.db).insert(dictionary)
         self.respond(success=True, message='Insertado correctamente.')
 
     def update(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        UrbanizacionManager(self.db).update(diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        UrbanizacionManager(self.db).update(dictionary)
         self.respond(success=True, message='Modificado correctamente.')
 
 
     def delete(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
+        dictionary = json.loads(self.get_argument("object"))
 
-        id = diccionary['id']
-        state = diccionary['enabled']
+        id = dictionary['id']
+        state = dictionary['enabled']
         respuesta = UrbanizacionManager(self.db).delete(id, self.get_user_id(), self.request.remote_ip,state)
 
         self.respond(success=True, message=respuesta)

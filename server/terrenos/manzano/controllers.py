@@ -30,27 +30,27 @@ class ManzanoController(CrudController):
 
     def insert(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        ManzanoManager(self.db).insert(diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        ManzanoManager(self.db).insert(dictionary)
         self.respond(success=True, message='Insertado correctamente.')
 
     def update(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        ManzanoManager(self.db).update(diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        ManzanoManager(self.db).update(dictionary)
         self.respond(success=True, message='Modificado correctamente.')
 
 
     def delete(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
+        dictionary = json.loads(self.get_argument("object"))
 
-        id = diccionary['id']
-        state = diccionary['enabled']
+        id = dictionary['id']
+        state = dictionary['enabled']
         respuesta = ManzanoManager(self.db).delete(id, self.get_user_id(), self.request.remote_ip,state)
 
         self.respond(success=True, message=respuesta)

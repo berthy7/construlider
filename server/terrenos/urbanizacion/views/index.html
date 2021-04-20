@@ -28,7 +28,10 @@
                     <thead>
                         <tr>
                             <th class="order_by_th accion" data-name="name">Nro</th>
+                            <th class="order_by_th accion" data-name="name">Nombre</th>
                             <th class="order_by_th accion" data-name="name">Direccion</th>
+                            <th class="order_by_th accion" data-name="name">UV</th>
+                            <th class="order_by_th accion" data-name="name">Valor m2</th>
                             <th class="order_by_th accion" data-name="description">Nro terrenos</th>
                             <th class="order_by_th accion" data-name="description">Nro Casas</th>
                             <th class="order_by_th accion" data-name="description">Nro Manzanos</th>
@@ -58,12 +61,15 @@
             {% for c in objects %}
                 data.push( [
                     '{{ c.id }}',
+                    '{{ c.nombre }}',
                     '{{ c.direccion }}',
+                    '{{ c.uv }}',
+                    '{{ c.valorMetroCuadrado }} {{ c.moneda.codigo }}',
                     '{{ c.numeroTerrenos}}',
                     '{{ c.numeroCasas}}',
                     '{{ c.numeroManzanos}}',
 
-                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
+                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>',
                     '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
 
                 ]);

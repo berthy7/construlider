@@ -3,25 +3,31 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 id="user_title" class="modal-title">Ingreso Manzano</h3>
+                <h3 id="user_title" class="modal-title">Registrar Manzano</h3>
                 <h4 id="user_enable" class=""></h4>
             </div>
 
             <div class="modal-body">
                 <div  id="user_form_body" class="box-body">
-                    <div id="id_div" class="form-group">
-                        <div class="form-line">
-                            {% module xsrf_form_html() %}
-                            <input id="id" type="text" class="form-control" disabled="disabled">
-                            <label for="id" class="form-label">Manzano ID</label>
+                    <div id="id_div">
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <label class="form-label">Nro</label>
+                                <div class="form-line">
+                                    {% module xsrf_form_html() %}
+                                    <input id="id" type="text" class="form-control" disabled="disabled">
+
+                                </div>
+                            </div>
                         </div>
+                        </br>
                     </div>
                     <div class="row clearfix">
                         <div class="col-sm-6">
                             <label>Urbanizacion</label>
                              <select id="fkurbanizacion" class="form-control" required>
                                 {% for urb in urbanizaciones %}
-                                    <option value="{{urb.id}}">{{urb.direccion}}</option>
+                                    <option value="{{urb.id}}">{{urb.nombre}}</option>
                                 {% end %}
                              </select>
                         </div>

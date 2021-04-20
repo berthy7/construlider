@@ -6,9 +6,10 @@
 {%end%}
 
 {%block content%}
-    {% if 'reserva_insert' in privileges or 'reserva_update' in privileges %}
-        {% include form.html %}
-    {% end %}
+
+{% include form.html %}
+{% include form_cancelar.html %}
+
 
     <div class="header "><h2 class="title-rg-own">Reservas</h2></div>
 
@@ -28,13 +29,16 @@
                     <thead>
                         <tr>
                             <th class="order_by_th accion" data-name="name">Nro</th>
-                            <th class="order_by_th accion" data-name="name">Urbanizacion</th>
-                            <th class="order_by_th accion" data-name="name">Manzano</th>
-                            <th class="order_by_th accion" data-name="name">Ancho</th>
-                            <th class="order_by_th accion" data-name="description">Largo</th>
-                            <th class="order_by_th accion" data-name="description">Superficie</th>
-                            <th class="actions_header">Estado</th>
+                            <th class="order_by_th accion" data-name="name">Fecha</th>
+                            <th class="order_by_th accion" data-name="name">Cliente</th>
+                            <th class="order_by_th accion" data-name="name">Monto</th>
+                            <th class="order_by_th accion" data-name="description">Urbanizacion</th>
+                            <th class="order_by_th accion" data-name="description">Manzano</th>
+                            <th class="order_by_th accion" data-name="description">Tipo</th>
+                            <th class="order_by_th accion" data-name="description">Terreno</th>
+                            <th class="order_by_th accion" data-name="description">Estado</th>
                             <th class="actions_header">Acciones</th>
+                            <th class="actions_header">Cancelar</th>
                         </tr>
                     </thead>
 
@@ -54,23 +58,35 @@
 <script>
         $(document).ready(function () {
 
+            var montoMinimoReserva ={{ ajuste.montoMinimoReserva }}
+            var fkmonedaReserva ={{ ajuste.fkmonedaReserva }}
+
             var data = [];
             {% set cont = 0 %}
             {% for c in objects %}
                 data.push( [
                     '{{ c.id }}',
-                    '{{ c.manzano.urbanizacion.direccion }}',
-                    '{{ c.manzano.numero }}',
-                     '{{ c.ancho }}',
-                     '{{ c.largo }}',
-                     '{{ c.superficie }}',
-                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
-                    '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
+                    '{{ c.fechaReserva.strftime('%d/%m/%Y') }}',
+                    '{{ c.cliente.fullname }}',
+                    '{{ c.monto }} {{ c.moneda.codigo }}',
+                    '{{ c.terreno.manzano.urbanizacion.nombre}}',
+                    '{{ c.terreno.manzano.numero}}',
+                    '{{ c.terreno.tipoterreno.nombre }}',
+                    '{{ c.terreno.id}}',
+                    '{{ c.estadoreserva.nombre}}',
+                    '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar reserva"><i class="material-icons">create</i></button>',
+
+                    {% if c.estadoreserva.nombre == "Iniciado" %}
+                        '<button id="cancel" onClick="cancelar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Cancelar reserva"><i class="material-icons">cancel</i></button>'
+                    {% else %}
+                        '---'
+                    {% end %}
 
                 ]);
             {% set cont = cont + 1 %}
             {% end %}
             cargar_tabla(data)
+            cargar_reserva_minima(montoMinimoReserva,fkmonedaReserva)
         })
 
 

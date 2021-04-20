@@ -14,11 +14,11 @@
 
     <div class="body">
         <div class="row clearfix">
-            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">
-            {% if 'manzano_insert' in privileges %}
-                <button id="new" type="button" class="btn bg-indigo waves-effect white-own">Nuevo <i class="material-icons"></i></button>
-            {% end %}
-            </div>
+{#            <div class="col-xs-3 col-sm-2 col-md-2 col-lg-2">#}
+{#            {% if 'manzano_insert' in privileges %}#}
+{#                <button id="new" type="button" class="btn bg-indigo waves-effect white-own">Nuevo <i class="material-icons"></i></button>#}
+{#            {% end %}#}
+{#            </div>#}
             {% if 'manzano_query' in privileges %}
         </div>
 
@@ -58,11 +58,11 @@
             {% for c in objects %}
                 data.push( [
                     '{{ c.id }}',
-                    '{{ c.urbanizacion.direccion }}',
+                    '{{ c.urbanizacion.nombre }}',
                     '{{ c.numero }}',
                     '{{ c.calle1}}',
                     '{{ c.calle2}}',
-                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>' + ' ' + '{% if c.enabled %} Habilitado {% else %} Deshabilitado {% end %}',
+                    '<input id="{{ c.id }}" onClick="event.preventDefault();eliminar(this)" data-id="{{ c.id }}" type="checkbox" class="chk-col-indigo delete" {% if c.enabled %} {{"checked"}} {% end %} /><label for="{{c.id}}"></label>',
                     '<button id="edit" onClick="editar(this)" data-json="{{ c.id }}" type="button" class="btn bg-indigo waves-effect waves-light white-own edit" title="Editar"><i class="material-icons">create</i></button>'
 
                 ]);

@@ -23,27 +23,27 @@ class RolController(CrudController):
 
     def insert(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        objeto = self.manager(self.db).entity(**diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        objeto = self.manager(self.db).entity(**dictionary)
         RolManager(self.db).insert(objeto)
         self.respond(success=True, message='Insertado correctamente.')
 
     def update(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        objeto = self.manager(self.db).entity(**diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        objeto = self.manager(self.db).entity(**dictionary)
         RolManager(self.db).update(objeto)
         self.respond(success=True, message='Modificado correctamente.')
 
     def delete_rol(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        id = diccionary['id']
-        enable = diccionary['enabled']
+        dictionary = json.loads(self.get_argument("object"))
+        id = dictionary['id']
+        enable = dictionary['enabled']
 
         RolManager(self.db).delete_rol(id, enable, self.get_user_id(), self.request.remote_ip)
         if enable == True:

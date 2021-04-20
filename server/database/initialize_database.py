@@ -10,6 +10,12 @@ from ..terrenos.scripts import insertions as terrenos_insertions
 
 from ..ventas.scripts import insertions as ventas_insertions
 
+from ..cobros.scripts import insertions as cobros_insertions
+
+from ..flujo.scripts import insertions as flujo_insertions
+
+from ..parametros.scripts import insertions as parametros_insertions
+
 
 from server.database import connection
 from .models import Base
@@ -21,7 +27,9 @@ def main():
     clientes_insertions()
     terrenos_insertions()
     ventas_insertions()
-
+    cobros_insertions()
+    flujo_insertions()
+    parametros_insertions()
 
     print('Database created/updated correctly!')
 

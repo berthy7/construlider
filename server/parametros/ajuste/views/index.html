@@ -1,0 +1,111 @@
+{%extends ../../../common/views/layout.html%}
+
+{%block style%}
+    {% set user = usuario %}
+    <link rel="stylesheet" href="parametros/ajuste/assets/ajuste.css">
+{%end%}
+
+{%block content%}
+    {% if 'ajuste_insert' in privileges or 'ajuste_update' in privileges %}
+        {% include form.html %}
+    {% end %}
+
+    <div class="header "><h2 class="title-rg-own">Ajustes</h2></div>
+    <input id="input_fkmonedaReserva" type="hidden" value="{{ ajuste.fkmonedaReserva }}">
+
+    <div class="body">
+          <div class="row clearfix">
+            <div class="col-sm-4">
+              <div class="card">
+                  <div class="header">
+                      <span>Monto mínino para reservas</span>
+                    </div>
+                <div class="body">
+                    <div class="row clearfix">
+                        <div class="col-sm-5">
+                            <label>Monto minimo</label>
+                                <div class="form-line">
+                                    <input id="montoMinimoReserva" name="Monto minimo" value="{{ ajuste.montoMinimoReserva }}" type="number" class="form-control txta-own"  >
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-5">
+                            <label>Moneda</label>
+                             <select id="fkmonedaReserva" class="form-control">
+                                {% for mone in monedas %}
+                                    <option value="{{mone.id}}">{{mone.nombre}}</option>
+                                {% end %}
+                             </select>
+                        </div>
+                    </div>
+
+                    <div class="row clearfix">
+                        <div class="col-sm-4">
+                            <button id="actualizarReserva" type="button" class="btn color_boton waves-effect white-own" >Guardar <i class="material-icons white-own">save</i></button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="header">
+                      <span>Tasa de interés</span>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                <div class="form-line">
+                                    <input id="tasaInteres" name="tasaInteres" value="{{ ajuste.tasaInteres }}" type="number" class="form-control txta-own"  >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <button id="actualizarTasaInteres" type="button" class="btn color_boton waves-effect white-own" >Guardar <i class="material-icons white-own">save</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="header">
+                        <span>Cuotas mora</span>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-sm-5">
+                                    <div class="form-line">
+                                        <input id="cuotasMora" name="Cuotas mora" value="{{ ajuste.cuotasMora }}" type="number" class="form-control txta-own"  >
+                                    </div>
+                            </div>
+                        </div>
+
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <button id="actualizarcuotasMora" type="button" class="btn color_boton waves-effect white-own" >Guardar <i class="material-icons white-own">save</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{%end%}
+
+{% block script%}
+    <script src="resources/js/validations.js"></script>
+    <script src="resources/js/functions.js"></script>
+    <script src="parametros/ajuste/assets/ajuste.js"></script>
+<script>
+
+
+
+</script>
+{%end%}

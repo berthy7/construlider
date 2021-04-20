@@ -38,30 +38,29 @@ class UsuarioController(CrudController):
     def insert(self):
         self.set_session()
         us = self.get_user()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user_id'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        diccionary['username'] = diccionary['correo']
-        diccionary['password'] = diccionary['ci']
-
-        respuesta = UsuarioManager(self.db).insert(diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user_id'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        UsuarioManager(self.db).insert(dictionary)
+        self.respond(success=True, message='Insertado correctamente.')
 
 
     def update(self):
         self.set_session()
         us = self.get_user()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user_id'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        objeto = self.manager(self.db).entity(**diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user_id'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        objeto = self.manager(self.db).entity(**dictionary)
         UsuarioManager(self.db).update(objeto)
+        self.respond(success=True, message='Modificado correctamente.')
 
 
     def delete_user(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        id = diccionary['id']
-        enable = diccionary['enabled']
+        dictionary = json.loads(self.get_argument("object"))
+        id = dictionary['id']
+        enable = dictionary['enabled']
         resp = UsuarioManager(self.db).delete_user(id, enable, self.get_user_id(), self.request.remote_ip)
 
         if resp:
@@ -90,11 +89,11 @@ class UsuarioController(CrudController):
 
     def user_update_password(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        user = self.manager(self.db).get_by_password(self.get_user_id(), diccionary['old_password'])
+        dictionary = json.loads(self.get_argument("object"))
+        user = self.manager(self.db).get_by_password(self.get_user_id(), dictionary['old_password'])
         if user:
-            if diccionary['new_password'] == diccionary['new_password_2']:
-                user.password = diccionary['new_password']
+            if dictionary['new_password'] == dictionary['new_password_2']:
+                user.password = dictionary['new_password']
                 self.manager(self.db).update_password(user)
                 self.respond(message="Contraseña cambiada correctamente ", success=True)
             else:
@@ -105,11 +104,11 @@ class UsuarioController(CrudController):
 
     def user_reset_password(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
+        dictionary = json.loads(self.get_argument("object"))
         user = self.manager(self.db).get_by_pass(self.get_user_id())
         if user:
-            if diccionary['new_password'] == diccionary['new_password_2']:
-                user.password = diccionary['new_password']
+            if dictionary['new_password'] == dictionary['new_password_2']:
+                user.password = dictionary['new_password']
                 self.manager(self.db).update_password(user)
                 self.respond(message="Contraseña cambiada correctamente ", success=True)
             else:
@@ -120,11 +119,10 @@ class UsuarioController(CrudController):
 
     def user_update_profile(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['ip'] = self.request.remote_ip
-        objeto = self.manager(self.db).entity(**diccionary)
-        user = self.manager(self.db).update_profile(objeto, diccionary['ip'])
-        self.respond(message="Datos Correctos", success=True)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['ip'] = self.request.remote_ip
+        user = self.manager(self.db).update_profile(dictionary)
+        self.respond(message="Datos Correctos", success=user)
         self.db.close()
 
     def usuario_codigo_reset(self):
@@ -146,8 +144,8 @@ class UsuarioController(CrudController):
 
     def verificar_username(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        username = diccionary['username']
+        dictionary = json.loads(self.get_argument("object"))
+        username = dictionary['username']
         repetido = UsuarioManager(self.db).verificar_username(username)
         if repetido['respuesta']:
             self.respond(message='', success=False)
@@ -156,10 +154,10 @@ class UsuarioController(CrudController):
 
     def restablecer_password(self):
         self.set_session()
-        diccionary = json.loads(self.get_argument("object"))
-        diccionary['user'] = self.get_user_id()
-        diccionary['ip'] = self.request.remote_ip
-        resp = UsuarioManager(self.db).restablecer_password(diccionary)
+        dictionary = json.loads(self.get_argument("object"))
+        dictionary['user'] = self.get_user_id()
+        dictionary['ip'] = self.request.remote_ip
+        resp = UsuarioManager(self.db).restablecer_password(dictionary)
         self.respond(resp)
 
 

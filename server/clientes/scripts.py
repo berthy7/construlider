@@ -63,18 +63,4 @@ def insertions():
         registrador_role.modulos.append(delete_cliente)
         registrador_role.modulos.append(imprimir_cliente)
 
-
-        super_user = session.query(Usuario).filter(Usuario.username == 'admin').first()
-        if super_user is None:
-            # hex_dig = hashlib.sha512(b'Password2020').hexdigest()
-            hex_dig = hashlib.sha512(b'admin').hexdigest()
-            super_user = Usuario(username='admin', password=hex_dig)
-            super_user.cliente = admin_role
-
-
-        session.add(super_user)
-
-        session.add(admin_role)
-        session.add(registrador_role)
-
         session.commit()

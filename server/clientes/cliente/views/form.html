@@ -3,18 +3,24 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 id="user_title" class="modal-title">Ingreso Cliente</h3>
+                <h3 id="user_title" class="modal-title">Registrar Cliente</h3>
                 <h4 id="user_enable" class=""></h4>
             </div>
 
             <div class="modal-body">
                 <div  id="user_form_body" class="box-body">
-                    <div id="id_div" class="form-group">
-                        <div class="form-line">
-                            {% module xsrf_form_html() %}
-                            <input id="id" type="text" class="form-control" disabled="disabled">
-                            <label for="id" class="form-label">Cliente ID</label>
+                    <div id="id_div">
+                        <div class="row clearfix">
+                            <div class="col-sm-4">
+                                <label class="form-label">Nro</label>
+                                <div class="form-line">
+                                    {% module xsrf_form_html() %}
+                                    <input id="id" type="text" class="form-control" disabled="disabled">
+
+                                </div>
+                            </div>
                         </div>
+
                     </div>
 
                     <div class="row clearfix">
@@ -24,9 +30,8 @@
                                     <input id="nombre" name="Nombre" type="text" class="form-control txta-own" required >
                                 </div>
                         </div>
-
                     </div>
-                    </br>
+
                     <div class="row clearfix">
                         <div class="col-sm-5">
                             <label>Apellidos</label>
@@ -36,7 +41,7 @@
                         </div>
 
                     </div>
-                    </br>
+
                     <div class="row clearfix">
                         <div class="col-sm-5">
                             <label>Carnet de Identidad</label>
@@ -44,22 +49,27 @@
                                     <input id="carnet" name="Carnet de Identidad" type="text" class="form-control txta-own" required>
                                 </div>
                         </div>
-
                     </div>
-                    </br>
 
                     <div class="row clearfix">
                         <div class="col-sm-5">
                             <label>Telefono</label>
-                                <div class="form-line">
-                                    <input id="telefono" name="Telefono" type="number" class="form-control txta-own" required>
-                                </div>
+                            <div class="form-line">
+                                <input id="telefono" name="Telefono" type="number" class="form-control txta-own" required>
+                            </div>
                         </div>
 
                     </div>
-                    </br>
 
-
+                    <div class="row clearfix">
+                        <div class="col-sm-5">
+                            <label>Email</label>
+                            <div class="form-line">
+                                <input id="email" name="Email" type="text" class="form-control txta-own" required>
+                            </div>
+                        </div>
+                    </div>
+                    
                      <div class="modal-footer">
                         {% if 'cliente_insert' in privileges %}
                             <button id="insert" type="button" class="btn color_boton waves-effect white-own" >Guardar <i class="material-icons white-own">save</i></button>
@@ -69,10 +79,7 @@
                         {% end %}
                     </div>
                 </div>
-
             </div>
-
-
         </div>
     </div>
 </div>

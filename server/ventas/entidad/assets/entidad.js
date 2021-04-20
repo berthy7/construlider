@@ -25,6 +25,17 @@ function cargar_tabla(data){
         deferRender:    true,
         scrollCollapse: true,
         scroller:       true,
+                  columnDefs: [
+            {
+                targets: 2,
+                className: 'text-center'
+            },
+            {
+                targets: 3,
+                className: 'text-center'
+            }
+          ],
+
 
         dom: "Bfrtip" ,
         buttons: [
@@ -122,7 +133,7 @@ function editar(elemento){
             clean_form()
             verif_inputs('')
             validationInputSelects("form")
-            $('#id_div').hide()
+            $('#id_div').show()
             $('#insert').hide()
             $('#update').show()
             $('#form').modal('show')
@@ -164,16 +175,16 @@ function eliminar(elemento){
     cb_delete = elemento
     b = $(elemento).prop('checked')
     if (!b) {
-        cb_title = "¿Deshabilitar Invitado?"
+        cb_title = "¿Deshabilitar Entidad?"
 
     } else {
-        cb_title = "¿Habilitar Invitado?"
+        cb_title = "¿Habilitar Entidad?"
     }
     swal({
         title: cb_title,
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#393939",
+        confirmButtonColor: "#424A5A",
         cancelButtonColor: "#F44336",
         confirmButtonText: "Aceptar",
         cancelButtonText: "Cancelar"
